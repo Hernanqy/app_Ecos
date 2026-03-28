@@ -16,10 +16,12 @@ body {
 }
 
 .pantalla {
+  position: relative;
   min-height: 100vh;
   max-width: 520px;
   margin: 0 auto;
   padding: 20px;
+  overflow: hidden;
   background:
     linear-gradient(rgba(12, 28, 12, 0.6), rgba(12, 28, 12, 0.72)),
     url("/fondo.jpg");
@@ -29,7 +31,7 @@ body {
 
 .pantalla-portada {
   background:
-    linear-gradient(rgba(18, 34, 16, 0.18), rgba(18, 34, 16, 0.42)),
+    linear-gradient(rgba(18, 34, 16, 0.14), rgba(18, 34, 16, 0.38)),
     url("/portada-bosque.png");
   background-size: cover;
   background-position: center;
@@ -39,6 +41,33 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.luz-magica {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 241, 180, 0.28) 0%,
+    rgba(255, 241, 180, 0.14) 35%,
+    rgba(255, 241, 180, 0.04) 60%,
+    rgba(255, 241, 180, 0) 100%
+  );
+  filter: blur(12px);
+  animation: flotarLuz 5.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.titulo-principal,
+.panel {
+  position: relative;
+  z-index: 2;
 }
 
 .titulo-principal {
@@ -52,7 +81,6 @@ body {
 }
 
 .panel {
-  position: relative;
   background: linear-gradient(180deg, rgba(232, 223, 191, 0.95) 0%, rgba(212, 198, 155, 0.95) 100%);
   border-radius: 28px;
   padding: 18px;
@@ -62,13 +90,17 @@ body {
     inset 0 3px 8px rgba(255, 255, 255, 0.25);
 }
 
+.panel-vivo {
+  animation: respirarPanel 4.5s ease-in-out infinite;
+}
+
 .panel-destacado {
   max-width: 440px;
   margin: 0 auto;
 }
 
 .pantalla-portada .panel {
-  background: linear-gradient(180deg, rgba(240, 231, 205, 0.9) 0%, rgba(219, 207, 170, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(240, 231, 205, 0.88) 0%, rgba(219, 207, 170, 0.9) 100%);
   backdrop-filter: blur(2px);
 }
 
@@ -171,6 +203,10 @@ button {
   cursor: pointer;
 }
 
+.boton-principal {
+  animation: brilloBoton 3.8s ease-in-out infinite;
+}
+
 button:active {
   transform: translateY(3px);
   box-shadow: 0 3px 0 #2e6a29;
@@ -223,6 +259,45 @@ div[id^="reader-"] {
     0 4px 0 #5f5439;
 }
 
+@keyframes flotarLuz {
+  0% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px) scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes respirarPanel {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.006);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes brilloBoton {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.08);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
 @media (max-width: 480px) {
   .pantalla {
     padding: 16px;
@@ -244,5 +319,10 @@ div[id^="reader-"] {
   input,
   li {
     font-size: 17px;
+  }
+
+  .luz-magica {
+    width: 85%;
+    height: 22%;
   }
 }

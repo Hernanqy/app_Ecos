@@ -126,15 +126,17 @@ export default function App() {
   function renderInicio() {
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">🌿</div>
           <div className="icono-hero">🧭</div>
           <p className="texto-destacado">
             Una experiencia para activar los ecos del territorio.
           </p>
-          <button onClick={() => setPantalla("reglas")}>
+          <button className="boton-principal" onClick={() => setPantalla("reglas")}>
             Comenzar recorrido
           </button>
         </div>
@@ -145,9 +147,11 @@ export default function App() {
   function renderReglas() {
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">🍃</div>
           <div className="icono-hero">🧭</div>
           <h2>Antes de empezar</h2>
@@ -164,9 +168,11 @@ export default function App() {
   function renderEquipos() {
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">👣</div>
           <div className="icono-hero">👥</div>
           <h2>Elegí tu equipo</h2>
@@ -261,7 +267,7 @@ export default function App() {
       <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">✨</div>
           <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
@@ -306,7 +312,7 @@ export default function App() {
       <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">🔎</div>
           <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
@@ -358,7 +364,7 @@ export default function App() {
       <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">🍃</div>
           <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
@@ -392,9 +398,11 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado">
+        <div className="panel panel-destacado panel-vivo">
           <div className="mascota-badge">🏞️</div>
           <div className="icono-hero">🌟</div>
           <h2>Recorrido completado</h2>
