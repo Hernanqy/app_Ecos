@@ -16,10 +16,12 @@ body {
 }
 
 .pantalla {
+  position: relative;
   min-height: 100vh;
   max-width: 520px;
   margin: 0 auto;
   padding: 20px;
+  overflow: hidden;
   background:
     linear-gradient(rgba(0, 35, 0, 0.62), rgba(0, 35, 0, 0.72)),
     url("/fondo.jpg");
@@ -31,6 +33,24 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.personaje-guia {
+  position: absolute;
+  right: -70px;
+  bottom: -18px;
+  height: 52vh;
+  max-height: 460px;
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
+}
+
+.titulo-principal,
+.panel {
+  position: relative;
+  z-index: 2;
 }
 
 .titulo-principal {
@@ -217,6 +237,13 @@ div[id^="reader-"] {
 
   .titulo-principal {
     font-size: 36px;
+  }
+
+  .personaje-guia {
+    right: -90px;
+    bottom: -10px;
+    height: 46vh;
+    opacity: 0.22;
   }
 
   h2 {

@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
 
+function DecoracionPersonaje({ visible = true }) {
+  if (!visible) return null
+
+  return (
+    <img
+      src="/personaje.png"
+      alt="Guía de la experiencia"
+      className="personaje-guia"
+    />
+  )
+}
+
 export default function App() {
   const [pantalla, setPantalla] = useState("inicio")
   const [equipo, setEquipo] = useState(null)
@@ -125,11 +137,13 @@ export default function App() {
 
   function renderInicio() {
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
-          <div className="icono-hero">🌿</div>
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">🌿</div>
+          <div className="icono-hero">🧭</div>
           <p className="texto-destacado">
             Una experiencia para activar los ecos del territorio.
           </p>
@@ -143,10 +157,12 @@ export default function App() {
 
   function renderReglas() {
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">🍃</div>
           <div className="icono-hero">🧭</div>
           <h2>Antes de empezar</h2>
           <p>Esto no es una carrera.</p>
@@ -161,11 +177,13 @@ export default function App() {
 
   function renderEquipos() {
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
-          <div className="icono-hero">👣</div>
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">👣</div>
+          <div className="icono-hero">👥</div>
           <h2>Elegí tu equipo</h2>
 
           {equipos.map((item) => (
@@ -255,10 +273,13 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">✨</div>
+          <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
             <strong>{equipoNombre}</strong>
           </p>
@@ -266,7 +287,6 @@ export default function App() {
             Eco {ecoActual + 1} de {ecos.length}
           </p>
 
-          <div className="icono-hero">{eco.icono}</div>
           <h2>¡Eco encontrado!</h2>
           <p>Validación correcta.</p>
           <p>Desbloquearon la siguiente pista.</p>
@@ -299,10 +319,12 @@ export default function App() {
     }
 
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">🔎</div>
+          <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
             <strong>{equipoNombre}</strong>
           </p>
@@ -313,7 +335,6 @@ export default function App() {
             <strong>Lugar:</strong> {eco.lugar}
           </p>
 
-          <div className="icono-hero">{eco.icono}</div>
           <h2>{eco.titulo}</h2>
           <p>{validador.pregunta}</p>
 
@@ -350,10 +371,13 @@ export default function App() {
     }
 
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">🍃</div>
+          <div className="icono-hero">{eco.icono}</div>
           <p className="meta">
             <strong>{equipoNombre}</strong>
           </p>
@@ -361,7 +385,6 @@ export default function App() {
             Eco {ecoActual + 1} de {ecos.length}
           </p>
 
-          <div className="icono-hero">{eco.icono}</div>
           <h2>Eco completado</h2>
           <p className="texto-destacado">
             Fragmento obtenido: <strong>{eco.fragmento}</strong>
@@ -385,11 +408,13 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
-      <div className="pantalla">
+      <div className="pantalla pantalla-centrada">
+        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel">
-          <div className="icono-hero">🏞️</div>
+        <div className="panel panel-destacado">
+          <div className="mascota-badge">🏞️</div>
+          <div className="icono-hero">🌟</div>
           <h2>Recorrido completado</h2>
           <p className="meta">
             <strong>{equipoNombre}</strong>
