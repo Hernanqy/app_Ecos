@@ -1,101 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-#root > div {
-  min-height: 100vh;
-  padding: 20px;
-  max-width: 520px;
-  margin: auto;
-
-  background:
-    linear-gradient(rgba(0, 30, 0, 0.7), rgba(0, 30, 0, 0.8)),
-    url("/fondo.jpg");
-  background-size: cover;
-}
-
-/* 🟫 PANEL CENTRAL (clave) */
-#root > div > * {
-  background: linear-gradient(180deg, #e8e1c8, #d2c8a5);
-  border-radius: 24px;
-  padding: 16px;
-  margin-bottom: 14px;
-
-  border: 3px solid #8b7d5a;
-
-  box-shadow:
-    0 8px 0 #5c5138,
-    inset 0 2px 4px rgba(255,255,255,0.3);
-}
-
-/* 🟢 TITULO */
-h1 {
-  text-align: center;
-  color: white;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* 🟢 SUBTITULO */
-h2 {
-  text-align: center;
-  color: #3a2f1f;
-}
-
-/* 🟢 TEXTO */
-p {
-  text-align: center;
+  font-family: "Nunito", Arial, sans-serif;
+  background: #18311c;
   color: #2b2418;
 }
 
-/* 🟢 BOTONES estilo juego */
+#root {
+  min-height: 100vh;
+}
+
+.pantalla {
+  min-height: 100vh;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px;
+  background:
+    linear-gradient(rgba(0, 35, 0, 0.62), rgba(0, 35, 0, 0.72)),
+    url("/fondo.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.titulo-principal {
+  font-family: "Baloo 2", cursive;
+  font-size: 42px;
+  line-height: 0.95;
+  text-align: center;
+  color: #fff5dd;
+  margin: 0 0 18px;
+  text-shadow: 0 4px 0 rgba(39, 64, 30, 0.55);
+}
+
+.panel {
+  background: linear-gradient(180deg, #e8dfbf 0%, #d4c69b 100%);
+  border-radius: 28px;
+  padding: 18px;
+  border: 4px solid #8a7b55;
+  box-shadow:
+    0 8px 0 #5f5439,
+    inset 0 3px 8px rgba(255, 255, 255, 0.25);
+}
+
+.icono-hero {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f9edc9 0%, #d9c583 100%);
+  border: 4px solid #8a7b55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow:
+    0 6px 0 #665738,
+    inset 0 2px 4px rgba(255, 255, 255, 0.35);
+}
+
+h2 {
+  font-family: "Baloo 2", cursive;
+  font-size: 30px;
+  line-height: 1;
+  text-align: center;
+  color: #3a2f1f;
+  margin: 0 0 10px;
+}
+
+h3 {
+  font-family: "Baloo 2", cursive;
+  font-size: 22px;
+  text-align: center;
+  color: #415628;
+  margin: 16px 0 10px;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.45;
+  text-align: center;
+  color: #2b2418;
+  margin: 10px 0;
+}
+
+.meta {
+  font-size: 15px;
+  font-weight: 700;
+  color: #4e4636;
+  margin: 6px 0;
+}
+
+.texto-destacado {
+  font-size: 19px;
+  font-weight: 800;
+  color: #264523;
+}
+
+.texto-suave {
+  font-size: 15px;
+  color: #5d5644;
+}
+
+.error-texto {
+  color: #8c1f1f;
+  font-weight: 800;
+}
+
 button {
   width: 100%;
   padding: 16px;
-  margin-top: 10px;
-
-  font-size: 18px;
-  font-weight: bold;
-
-  border-radius: 20px;
+  margin-top: 12px;
   border: none;
-
-  background: linear-gradient(180deg, #6bbf59, #3d8f3a);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #65b44e 0%, #3d8f3a 100%);
   color: white;
-
+  font-family: "Baloo 2", cursive;
+  font-size: 22px;
+  font-weight: 800;
   box-shadow:
-    0 6px 0 #2c6b2a,
-    inset 0 2px 4px rgba(255,255,255,0.3);
+    0 6px 0 #2e6a29,
+    inset 0 2px 4px rgba(255, 255, 255, 0.25);
+  cursor: pointer;
 }
 
 button:active {
   transform: translateY(3px);
-  box-shadow: 0 3px 0 #2c6b2a;
+  box-shadow: 0 3px 0 #2e6a29;
 }
 
-/* 🟢 INPUT */
+.boton-secundario {
+  background: linear-gradient(180deg, #a48852 0%, #82693d 100%);
+  box-shadow:
+    0 6px 0 #5d4a29,
+    inset 0 2px 4px rgba(255, 255, 255, 0.22);
+}
+
 input {
   width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-
-  border-radius: 14px;
-  border: 2px solid #8b7d5a;
-
+  padding: 15px 16px;
+  margin-top: 12px;
+  border-radius: 18px;
+  border: 3px solid #958560;
   background: #fffaf0;
+  color: #2b2418;
+  font-family: "Nunito", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
 }
 
-/* 🟢 LISTA */
 ul {
   list-style: none;
   padding: 0;
+  margin: 12px 0 0;
 }
 
 li {
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 6px;
+  background: rgba(255, 251, 241, 0.95);
+  border: 2px solid #a18f68;
+  border-radius: 16px;
+  padding: 12px;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: #35512a;
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4);
+}
+
+div[id^="reader-"] {
+  margin-top: 8px;
+  border: 4px solid #8a7b55;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.22),
+    0 4px 0 #5f5439;
+}
+
+@media (max-width: 480px) {
+  .pantalla {
+    padding: 16px;
+  }
+
+  .titulo-principal {
+    font-size: 36px;
+  }
+
+  h2 {
+    font-size: 27px;
+  }
+
+  button {
+    font-size: 20px;
+  }
+
+  p,
+  input,
+  li {
+    font-size: 17px;
+  }
 }
