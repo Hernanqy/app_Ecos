@@ -33,7 +33,7 @@ export default function App() {
     if (valor.trim().toUpperCase() === codigoEsperado) {
       setMensajeError("")
       setCodigoIngresado("")
-      setPantalla("pregunta")
+      setPantalla("codigo-correcto")
     } else {
       setMensajeError("Este no es su eco")
       setCodigoIngresado("")
@@ -203,6 +203,27 @@ export default function App() {
         </button>
 
         {mensajeError && <p>{mensajeError}</p>}
+      </div>
+    )
+  }
+
+  if (pantalla === "codigo-correcto") {
+    const eco = ecos[ecoActual]
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
+
+    return (
+      <div>
+        <p><strong>{equipoNombre}</strong></p>
+        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+
+        <h2>¡Eco encontrado!</h2>
+        <p>Validación correcta.</p>
+        <p>Desbloquearon la siguiente pista.</p>
+
+        <button onClick={() => setPantalla("pregunta")}>
+          Continuar
+        </button>
       </div>
     )
   }
