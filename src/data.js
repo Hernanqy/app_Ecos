@@ -7,56 +7,56 @@ export const equipos = [
 export const ecos = [
   {
     id: 1,
-    lugar: "Museo",
+    lugar: "Museo - Sala primeros habitantes",
     titulo: "Eco del tiempo",
     consigna:
-      "Encuentren algo que existió antes que ustedes, pero que ya no está en este territorio.",
+      "Encuentren algo que fue creado por personas que vivieron en este territorio mucho antes que ustedes.",
     validadores: {
       a: {
         codigo: "PUNTA",
         objeto: "Punta de proyectil",
-        pregunta: "¿De qué está hecha la punta de proyectil?",
+        pregunta: "¿De qué material está hecha esta herramienta?",
         respuestaCorrecta: "PIEDRA"
       },
       b: {
         codigo: "FOSIL",
         objeto: "Fósil",
-        pregunta: "¿Qué evidencia conserva un fósil?",
-        respuestaCorrecta: "VIDA"
+        pregunta: "¿Qué nos permite conocer un fósil?",
+        respuestaCorrecta: "PASADO"
       },
       c: {
-        codigo: "RASTRO",
-        objeto: "Rastro de megafauna",
-        pregunta: "¿Qué idea deja un rastro del pasado?",
-        respuestaCorrecta: "HUELLA"
+        codigo: "HERRAMIENTA",
+        objeto: "Herramienta antigua",
+        pregunta: "¿Para qué fue creada esta herramienta?",
+        respuestaCorrecta: "CAZAR"
       }
     },
     fragmento: "ORIGEN"
   },
   {
     id: 2,
-    lugar: "Exterior del museo",
+    lugar: "Salida del museo / exterior",
     titulo: "Eco de la observación",
     consigna:
-      "Deténganse. Miren el entorno con atención y encuentren su validador.",
+      "Deténganse. Durante unos segundos no hablen. Miren el entorno con atención.",
     validadores: {
       a: {
         codigo: "SOMBRA",
-        objeto: "Sombra",
-        pregunta: "¿Qué aparece en el suelo cuando la luz se interrumpe?",
+        objeto: "Sombra en el suelo",
+        pregunta: "¿Qué aparece cuando la luz es interrumpida?",
         respuestaCorrecta: "SOMBRA"
       },
       b: {
         codigo: "LUZ",
-        objeto: "Haz de luz",
-        pregunta: "¿Qué hace visible una sombra?",
+        objeto: "Luz del sol",
+        pregunta: "¿Qué hace visibles las formas en el entorno?",
         respuestaCorrecta: "LUZ"
       },
       c: {
-        codigo: "HOJA",
-        objeto: "Hoja",
-        pregunta: "¿Qué elemento natural cambia con el viento y la luz?",
-        respuestaCorrecta: "HOJA"
+        codigo: "VIENTO",
+        objeto: "Movimiento del entorno",
+        pregunta: "¿Qué no se ve pero se siente en el entorno?",
+        respuestaCorrecta: "VIENTO"
       }
     },
     fragmento: "MIRAR"
@@ -66,25 +66,25 @@ export const ecos = [
     lugar: "Bioparque",
     titulo: "Eco de la vida",
     consigna:
-      "Encuentren algo vivo que no se mueva como ustedes.",
+      "Encuentren algo vivo que no se mueva como ustedes, pero que forma parte de este lugar.",
     validadores: {
       a: {
         codigo: "CONDOR",
         objeto: "Cóndor",
-        pregunta: "¿Qué palabra nombra todo lo que está vivo en este recorrido?",
+        pregunta: "¿Qué palabra engloba a todos los seres vivos?",
         respuestaCorrecta: "VIDA"
       },
       b: {
         codigo: "PLANTA",
         objeto: "Planta",
-        pregunta: "¿Qué necesita una planta para crecer?",
+        pregunta: "¿Qué necesita una planta para vivir?",
         respuestaCorrecta: "AGUA"
       },
       c: {
-        codigo: "FLOR",
-        objeto: "Flor",
-        pregunta: "¿Qué parte visible ayuda a reconocer una flor?",
-        respuestaCorrecta: "COLOR"
+        codigo: "ARBOL",
+        objeto: "Árbol",
+        pregunta: "¿Qué parte del árbol crece hacia el suelo?",
+        respuestaCorrecta: "RAIZ"
       }
     },
     fragmento: "VIVO"
