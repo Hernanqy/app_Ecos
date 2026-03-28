@@ -37,16 +37,21 @@ body {
 
 .personaje-guia {
   position: absolute;
-  right: -70px;
-  bottom: -18px;
-  height: 52vh;
-  max-height: 460px;
-  opacity: 0.28;
-  pointer-events: none;
-  z-index: 1;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
-}
 
+  right: -140px;   /* más afuera */
+  bottom: -40px;   /* más abajo */
+
+  height: 65vh;
+  max-height: 520px;
+
+  opacity: 0.35;
+
+  pointer-events: none;
+
+  z-index: 0; /* importante: atrás */
+
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+}
 .titulo-principal,
 .panel {
   position: relative;
