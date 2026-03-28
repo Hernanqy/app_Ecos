@@ -125,46 +125,66 @@ export default function App() {
 
   function renderInicio() {
     return (
-      <div>
-        <h1>Ecos de La Máxima</h1>
-        <p>Una experiencia para activar los ecos del territorio.</p>
-        <button onClick={() => setPantalla("reglas")}>Iniciar</button>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+
+        <div className="panel">
+          <div className="icono-hero">🌿</div>
+          <p className="texto-destacado">
+            Una experiencia para activar los ecos del territorio.
+          </p>
+          <button onClick={() => setPantalla("reglas")}>
+            Comenzar recorrido
+          </button>
+        </div>
       </div>
     )
   }
 
   function renderReglas() {
     return (
-      <div>
-        <h2>Antes de empezar</h2>
-        <p>Esto no es una carrera.</p>
-        <p>No hace falta correr.</p>
-        <p>No toquen nada que no sea necesario.</p>
-        <p>Todo lo que buscan está a la vista.</p>
-        <button onClick={() => setPantalla("equipos")}>Entendido</button>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+
+        <div className="panel">
+          <div className="icono-hero">🧭</div>
+          <h2>Antes de empezar</h2>
+          <p>Esto no es una carrera.</p>
+          <p>No hace falta correr.</p>
+          <p>No toquen nada que no sea necesario.</p>
+          <p>Todo lo que buscan está a la vista.</p>
+          <button onClick={() => setPantalla("equipos")}>Entendido</button>
+        </div>
       </div>
     )
   }
 
   function renderEquipos() {
     return (
-      <div>
-        <h2>Elegí tu equipo</h2>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        {equipos.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => {
-              setEquipo(item.id)
-              setMensajeError("")
-              setPantalla("eco")
-            }}
-          >
-            {item.nombre}
+        <div className="panel">
+          <div className="icono-hero">👣</div>
+          <h2>Elegí tu equipo</h2>
+
+          {equipos.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setEquipo(item.id)
+                setMensajeError("")
+                setPantalla("eco")
+              }}
+            >
+              {item.nombre}
+            </button>
+          ))}
+
+          <button className="boton-secundario" onClick={reiniciarApp}>
+            Volver
           </button>
-        ))}
-
-        <button onClick={reiniciarApp}>Volver</button>
+        </div>
       </div>
     )
   }
@@ -177,41 +197,54 @@ export default function App() {
     const readerId = `reader-${ecoActual}`
 
     return (
-      <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
-        <p><strong>Lugar:</strong> {eco.lugar}</p>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>{eco.titulo}</h2>
-        <p>{eco.consigna}</p>
+        <div className="panel">
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
+          <p className="meta">
+            <strong>Lugar:</strong> {eco.lugar}
+          </p>
 
-        <p><strong>Busquen:</strong> {validador.objeto}</p>
+          <div className="icono-hero">🔍</div>
+          <h2>{eco.titulo}</h2>
+          <p>{eco.consigna}</p>
 
-        <h3>Escanear QR</h3>
-        <div
-          id={readerId}
-          style={{
-            width: "100%",
-            minHeight: "260px",
-            borderRadius: "12px",
-            overflow: "hidden",
-            background: "#ddd"
-          }}
-        />
+          <p className="texto-destacado">
+            <strong>Busquen:</strong> {validador.objeto}
+          </p>
 
-        <p>o ingresar código</p>
+          <h3>Escanear QR</h3>
+          <div
+            id={readerId}
+            style={{
+              width: "100%",
+              minHeight: "260px",
+              borderRadius: "16px",
+              overflow: "hidden",
+              background: "#d8dccf"
+            }}
+          />
 
-        <input
-          value={codigoIngresado}
-          onChange={(e) => setCodigoIngresado(e.target.value)}
-          placeholder="Código"
-        />
+          <p className="texto-suave">o ingresar código manualmente</p>
 
-        <button onClick={() => validarCodigo(codigoIngresado)}>
-          Validar código
-        </button>
+          <input
+            value={codigoIngresado}
+            onChange={(e) => setCodigoIngresado(e.target.value)}
+            placeholder="Código"
+          />
 
-        {mensajeError && <p>{mensajeError}</p>}
+          <button onClick={() => validarCodigo(codigoIngresado)}>
+            Validar eco
+          </button>
+
+          {mensajeError && <p className="error-texto">{mensajeError}</p>}
+        </div>
       </div>
     )
   }
@@ -221,15 +254,24 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
-      <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>¡Eco encontrado!</h2>
-        <p>Validación correcta.</p>
-        <p>Desbloquearon la siguiente pista.</p>
+        <div className="panel">
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
 
-        <button onClick={() => setPantalla("pregunta")}>Continuar</button>
+          <div className="icono-hero">✨</div>
+          <h2>¡Eco encontrado!</h2>
+          <p>Validación correcta.</p>
+          <p>Desbloquearon la siguiente pista.</p>
+
+          <button onClick={() => setPantalla("pregunta")}>Continuar</button>
+        </div>
       </div>
     )
   }
@@ -256,23 +298,34 @@ export default function App() {
     }
 
     return (
-      <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
-        <p><strong>Lugar:</strong> {eco.lugar}</p>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>{eco.titulo}</h2>
-        <p>{validador.pregunta}</p>
+        <div className="panel">
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
+          <p className="meta">
+            <strong>Lugar:</strong> {eco.lugar}
+          </p>
 
-        <input
-          value={respuestaIngresada}
-          onChange={(e) => setRespuestaIngresada(e.target.value)}
-          placeholder="Respuesta"
-        />
+          <div className="icono-hero">🪶</div>
+          <h2>{eco.titulo}</h2>
+          <p>{validador.pregunta}</p>
 
-        <button onClick={validarRespuesta}>Responder</button>
+          <input
+            value={respuestaIngresada}
+            onChange={(e) => setRespuestaIngresada(e.target.value)}
+            placeholder="Respuesta"
+          />
 
-        {mensajeError && <p>{mensajeError}</p>}
+          <button onClick={validarRespuesta}>Responder</button>
+
+          {mensajeError && <p className="error-texto">{mensajeError}</p>}
+        </div>
       </div>
     )
   }
@@ -296,21 +349,32 @@ export default function App() {
     }
 
     return (
-      <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>Eco completado</h2>
-        <p>Fragmento obtenido: {eco.fragmento}</p>
+        <div className="panel">
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
 
-        <h3>Fragmentos reunidos:</h3>
-        <ul>
-          {fragmentos.map((f, i) => (
-            <li key={i}>{f}</li>
-          ))}
-        </ul>
+          <div className="icono-hero">🍃</div>
+          <h2>Eco completado</h2>
+          <p className="texto-destacado">
+            Fragmento obtenido: <strong>{eco.fragmento}</strong>
+          </p>
 
-        <button onClick={siguienteEco}>Continuar</button>
+          <h3>Fragmentos reunidos</h3>
+          <ul>
+            {fragmentos.map((f, i) => (
+              <li key={i}>{f}</li>
+            ))}
+          </ul>
+
+          <button onClick={siguienteEco}>Continuar</button>
+        </div>
       </div>
     )
   }
@@ -320,18 +384,25 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
-      <div>
-        <h2>Final</h2>
-        <p><strong>{equipoNombre}</strong></p>
+      <div className="pantalla">
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h3>Fragmentos obtenidos:</h3>
-        <ul>
-          {fragmentos.map((f, i) => (
-            <li key={i}>{f}</li>
-          ))}
-        </ul>
+        <div className="panel">
+          <div className="icono-hero">🏞️</div>
+          <h2>Recorrido completado</h2>
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
 
-        <button onClick={reiniciarApp}>Reiniciar</button>
+          <h3>Fragmentos obtenidos</h3>
+          <ul>
+            {fragmentos.map((f, i) => (
+              <li key={i}>{f}</li>
+            ))}
+          </ul>
+
+          <button onClick={reiniciarApp}>Volver al inicio</button>
+        </div>
       </div>
     )
   }
