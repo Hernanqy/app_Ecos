@@ -7,6 +7,7 @@ export const equipos = [
 export const ecos = [
   {
     id: 1,
+    icono: "⏳",
     lugar: "Museo - Sala primeros habitantes",
     titulo: "Eco del tiempo",
     consigna:
@@ -35,6 +36,7 @@ export const ecos = [
   },
   {
     id: 2,
+    icono: "👁️",
     lugar: "Salida del museo / exterior",
     titulo: "Eco de la observación",
     consigna:
@@ -63,6 +65,7 @@ export const ecos = [
   },
   {
     id: 3,
+    icono: "🐾",
     lugar: "Bioparque",
     titulo: "Eco de la vida",
     consigna:

@@ -211,7 +211,7 @@ export default function App() {
             <strong>Lugar:</strong> {eco.lugar}
           </p>
 
-          <div className="icono-hero">🔍</div>
+          <div className="icono-hero">{eco.icono}</div>
           <h2>{eco.titulo}</h2>
           <p>{eco.consigna}</p>
 
@@ -250,6 +250,7 @@ export default function App() {
   }
 
   function renderCodigoCorrecto() {
+    const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
@@ -265,7 +266,7 @@ export default function App() {
             Eco {ecoActual + 1} de {ecos.length}
           </p>
 
-          <div className="icono-hero">✨</div>
+          <div className="icono-hero">{eco.icono}</div>
           <h2>¡Eco encontrado!</h2>
           <p>Validación correcta.</p>
           <p>Desbloquearon la siguiente pista.</p>
@@ -312,7 +313,7 @@ export default function App() {
             <strong>Lugar:</strong> {eco.lugar}
           </p>
 
-          <div className="icono-hero">🪶</div>
+          <div className="icono-hero">{eco.icono}</div>
           <h2>{eco.titulo}</h2>
           <p>{validador.pregunta}</p>
 
@@ -360,7 +361,7 @@ export default function App() {
             Eco {ecoActual + 1} de {ecos.length}
           </p>
 
-          <div className="icono-hero">🍃</div>
+          <div className="icono-hero">{eco.icono}</div>
           <h2>Eco completado</h2>
           <p className="texto-destacado">
             Fragmento obtenido: <strong>{eco.fragmento}</strong>
