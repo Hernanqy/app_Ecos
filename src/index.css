@@ -53,10 +53,10 @@ body {
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 241, 180, 0.28) 0%,
-    rgba(255, 241, 180, 0.14) 35%,
-    rgba(255, 241, 180, 0.04) 60%,
-    rgba(255, 241, 180, 0) 100%
+    rgba(255, 230, 140, 0.18) 0%,
+    rgba(255, 230, 140, 0.10) 30%,
+    rgba(255, 230, 140, 0.04) 60%,
+    rgba(255, 230, 140, 0) 100%
   );
   filter: blur(12px);
   animation: flotarLuz 5.5s ease-in-out infinite;
@@ -91,7 +91,7 @@ body {
 }
 
 .panel-vivo {
-  animation: respirarPanel 4.5s ease-in-out infinite;
+  animation: respirarPanel 6s ease-in-out infinite;
 }
 
 .panel-destacado {
@@ -208,7 +208,7 @@ button {
 }
 
 button:active {
-  transform: translateY(3px);
+  transform: translateY(3px) scale(0.98);
   box-shadow: 0 3px 0 #2e6a29;
 }
 
