@@ -13,35 +13,38 @@ export const ecos = [
     codigoCorrectoPorEquipo: {
       a: "PUNTA",
       b: "FOSIL",
-      c: "HERRAMIENTA"
+      c: "RASTRO"
     },
-    pregunta: "¿De qué está hecha?",
+    pregunta: "¿De qué está hecha la punta de proyectil?",
     respuestaCorrecta: "PIEDRA",
     fragmento: "ORIGEN"
   },
   {
     id: 2,
     titulo: "Eco de la observación",
-    consigna: "Observen el entorno y encuentren su validador.",
+    consigna:
+      "Deténganse. Miren el entorno con atención y encuentren su validador.",
     codigoCorrectoPorEquipo: {
       a: "SOMBRA",
       b: "LUZ",
-      c: "ARBOL"
+      c: "HOJA"
     },
-    pregunta: "¿Qué cambia cuando miran con atención?",
+    pregunta: "¿Qué aparece en el suelo cuando la luz se interrumpe?",
     respuestaCorrecta: "SOMBRA",
     fragmento: "MIRAR"
   },
   {
     id: 3,
     titulo: "Eco de la vida",
-    consigna: "Encuentren algo vivo que no se mueva como ustedes.",
+    consigna:
+      "Encuentren algo vivo que no se mueva como ustedes.",
     codigoCorrectoPorEquipo: {
       a: "CONDOR",
       b: "PLANTA",
-      c: "LAGO"
+      c: "FLOR"
     },
-    pregunta: "¿Qué encontraron?",
+    pregunta:
+      "¿Qué palabra nombra todo lo que está vivo en este recorrido?",
     respuestaCorrecta: "VIDA",
     fragmento: "VIVO"
   }
