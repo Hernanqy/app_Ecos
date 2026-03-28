@@ -12,24 +12,27 @@ export default function App() {
   const [fragmentos, setFragmentos] = useState([])
 
   const scannerRef = useRef(null)
-  const scannerActivoRef = useRef(false)
-  const yaLeidoRef = useRef(false)
+  const scannerIniciadoRef = useRef(false)
+  const qrLeidoRef = useRef(false)
 
   async function detenerScanner() {
-    if (scannerRef.current) {
-      try {
-        await scannerRef.current.stop()
-      } catch (_) {}
-
-      try {
-        await scannerRef.current.clear()
-      } catch (_) {}
-
-      scannerRef.current = null
+    if (!scannerRef.current) {
+      scannerIniciadoRef.current = false
+      qrLeidoRef.current = false
+      return
     }
 
-    scannerActivoRef.current = false
-    yaLeidoRef.current = false
+    try {
+      await scannerRef.current.stop()
+    } catch (_) {}
+
+    try {
+      await scannerRef.current.clear()
+    } catch (_) {}
+
+    scannerRef.current = null
+    scannerIniciadoRef.current = false
+    qrLeidoRef.current = false
   }
 
   function reiniciarApp() {
@@ -53,12 +56,12 @@ export default function App() {
     } else {
       setMensajeError("Este no es su eco")
       setCodigoIngresado("")
-      yaLeidoRef.current = false
+      qrLeidoRef.current = false
     }
   }
 
   useEffect(() => {
-    let cancelado = false
+    let desmontado = false
 
     async function iniciarScanner() {
       if (pantalla !== "eco") {
@@ -66,7 +69,7 @@ export default function App() {
         return
       }
 
-      if (scannerActivoRef.current) return
+      if (scannerIniciadoRef.current) return
 
       const readerId = `reader-${ecoActual}`
       const readerElement = document.getElementById(readerId)
@@ -74,14 +77,14 @@ export default function App() {
 
       try {
         const { Html5Qrcode } = await import("html5-qrcode")
-        if (cancelado) return
+        if (desmontado) return
 
         const eco = ecos[ecoActual]
         const scanner = new Html5Qrcode(readerId)
 
         scannerRef.current = scanner
-        scannerActivoRef.current = true
-        yaLeidoRef.current = false
+        scannerIniciadoRef.current = true
+        qrLeidoRef.current = false
 
         await scanner.start(
           { facingMode: "environment" },
@@ -91,8 +94,8 @@ export default function App() {
             aspectRatio: 1
           },
           async (decodedText) => {
-            if (yaLeidoRef.current) return
-            yaLeidoRef.current = true
+            if (qrLeidoRef.current) return
+            qrLeidoRef.current = true
 
             await detenerScanner()
             validarCodigo(decodedText, eco)
@@ -102,19 +105,21 @@ export default function App() {
       } catch (error) {
         console.error("Error al iniciar scanner:", error)
         setMensajeError("No se pudo abrir la cámara")
-        scannerActivoRef.current = false
+        scannerIniciadoRef.current = false
       }
     }
 
     iniciarScanner()
 
     return () => {
-      cancelado = true
-      detenerScanner()
+      desmontado = true
+      if (pantalla === "eco") {
+        detenerScanner()
+      }
     }
   }, [pantalla, ecoActual, equipo])
 
-  if (pantalla === "inicio") {
+  function renderInicio() {
     return (
       <div>
         <h1>Ecos de La Máxima</h1>
@@ -124,7 +129,7 @@ export default function App() {
     )
   }
 
-  if (pantalla === "reglas") {
+  function renderReglas() {
     return (
       <div>
         <h2>Antes de empezar</h2>
@@ -137,7 +142,7 @@ export default function App() {
     )
   }
 
-  if (pantalla === "equipos") {
+  function renderEquipos() {
     return (
       <div>
         <h2>Elegí tu equipo</h2>
@@ -160,7 +165,7 @@ export default function App() {
     )
   }
 
-  if (pantalla === "eco") {
+  function renderEco() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
@@ -207,8 +212,7 @@ export default function App() {
     )
   }
 
-  if (pantalla === "codigo-correcto") {
-    const eco = ecos[ecoActual]
+  function renderCodigoCorrecto() {
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
@@ -230,16 +234,17 @@ export default function App() {
     )
   }
 
-  if (pantalla === "pregunta") {
+  function renderPregunta() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     function validarRespuesta() {
       if (respuestaIngresada.trim().toUpperCase() === eco.respuestaCorrecta) {
-        setMensajeError("")
-        setFragmentos([...fragmentos, eco.fragmento])
+        const nuevosFragmentos = [...fragmentos, eco.fragmento]
+        setFragmentos(nuevosFragmentos)
         setRespuestaIngresada("")
+        setMensajeError("")
         setPantalla("resultado")
       } else {
         setMensajeError("Respuesta incorrecta")
@@ -271,16 +276,18 @@ export default function App() {
     )
   }
 
-  if (pantalla === "resultado") {
+  function renderResultado() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     function siguienteEco() {
       setMensajeError("")
+      setCodigoIngresado("")
+      setRespuestaIngresada("")
 
       if (ecoActual + 1 < ecos.length) {
-        setEcoActual(ecoActual + 1)
+        setEcoActual((prev) => prev + 1)
         setPantalla("eco")
       } else {
         setPantalla("final")
@@ -311,7 +318,7 @@ export default function App() {
     )
   }
 
-  if (pantalla === "final") {
+  function renderFinal() {
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
@@ -334,5 +341,14 @@ export default function App() {
     )
   }
 
-  return null
+  if (pantalla === "inicio") return renderInicio()
+  if (pantalla === "reglas") return renderReglas()
+  if (pantalla === "equipos") return renderEquipos()
+  if (pantalla === "eco") return renderEco()
+  if (pantalla === "codigo-correcto") return renderCodigoCorrecto()
+  if (pantalla === "pregunta") return renderPregunta()
+  if (pantalla === "resultado") return renderResultado()
+  if (pantalla === "final") return renderFinal()
+
+  return <div>Error de navegación</div>
 }
