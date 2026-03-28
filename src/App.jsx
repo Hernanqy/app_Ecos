@@ -12,11 +12,28 @@ export default function App() {
   const [fragmentos, setFragmentos] = useState([])
 
   const scannerRef = useRef(null)
-  const scannerMountedRef = useRef(false)
+  const scannerActivoRef = useRef(false)
   const yaLeidoRef = useRef(false)
-  const readerId = "reader"
+
+  async function detenerScanner() {
+    if (scannerRef.current) {
+      try {
+        await scannerRef.current.stop()
+      } catch (_) {}
+
+      try {
+        await scannerRef.current.clear()
+      } catch (_) {}
+
+      scannerRef.current = null
+    }
+
+    scannerActivoRef.current = false
+    yaLeidoRef.current = false
+  }
 
   function reiniciarApp() {
+    detenerScanner()
     setPantalla("inicio")
     setEquipo(null)
     setEcoActual(0)
@@ -24,7 +41,6 @@ export default function App() {
     setRespuestaIngresada("")
     setMensajeError("")
     setFragmentos([])
-    yaLeidoRef.current = false
   }
 
   function validarCodigo(valor, eco) {
@@ -42,23 +58,29 @@ export default function App() {
   }
 
   useEffect(() => {
-    let cancelled = false
+    let cancelado = false
 
     async function iniciarScanner() {
-      if (pantalla !== "eco") return
-      if (scannerMountedRef.current) return
+      if (pantalla !== "eco") {
+        await detenerScanner()
+        return
+      }
 
-      const eco = ecos[ecoActual]
+      if (scannerActivoRef.current) return
+
+      const readerId = `reader-${ecoActual}`
       const readerElement = document.getElementById(readerId)
       if (!readerElement) return
 
       try {
         const { Html5Qrcode } = await import("html5-qrcode")
-        if (cancelled) return
+        if (cancelado) return
 
+        const eco = ecos[ecoActual]
         const scanner = new Html5Qrcode(readerId)
+
         scannerRef.current = scanner
-        scannerMountedRef.current = true
+        scannerActivoRef.current = true
         yaLeidoRef.current = false
 
         await scanner.start(
@@ -72,17 +94,7 @@ export default function App() {
             if (yaLeidoRef.current) return
             yaLeidoRef.current = true
 
-            try {
-              await scanner.stop()
-            } catch (_) {}
-
-            try {
-              await scanner.clear()
-            } catch (_) {}
-
-            scannerRef.current = null
-            scannerMountedRef.current = false
-
+            await detenerScanner()
             validarCodigo(decodedText, eco)
           },
           () => {}
@@ -90,32 +102,15 @@ export default function App() {
       } catch (error) {
         console.error("Error al iniciar scanner:", error)
         setMensajeError("No se pudo abrir la cámara")
-        scannerMountedRef.current = false
+        scannerActivoRef.current = false
       }
     }
 
     iniciarScanner()
 
     return () => {
-      cancelled = true
-
-      async function cleanup() {
-        if (scannerRef.current) {
-          try {
-            await scannerRef.current.stop()
-          } catch (_) {}
-
-          try {
-            await scannerRef.current.clear()
-          } catch (_) {}
-
-          scannerRef.current = null
-        }
-        scannerMountedRef.current = false
-        yaLeidoRef.current = false
-      }
-
-      cleanup()
+      cancelado = true
+      detenerScanner()
     }
   }, [pantalla, ecoActual, equipo])
 
@@ -169,11 +164,16 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
+    const readerId = `reader-${ecoActual}`
 
     return (
       <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p>
+          <strong>{equipoNombre}</strong>
+        </p>
+        <p>
+          Eco {ecoActual + 1} de {ecos.length}
+        </p>
 
         <h2>{eco.titulo}</h2>
         <p>{eco.consigna}</p>
@@ -214,16 +214,18 @@ export default function App() {
 
     return (
       <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p>
+          <strong>{equipoNombre}</strong>
+        </p>
+        <p>
+          Eco {ecoActual + 1} de {ecos.length}
+        </p>
 
         <h2>¡Eco encontrado!</h2>
         <p>Validación correcta.</p>
         <p>Desbloquearon la siguiente pista.</p>
 
-        <button onClick={() => setPantalla("pregunta")}>
-          Continuar
-        </button>
+        <button onClick={() => setPantalla("pregunta")}>Continuar</button>
       </div>
     )
   }
@@ -234,10 +236,7 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     function validarRespuesta() {
-      if (
-        respuestaIngresada.trim().toUpperCase() ===
-        eco.respuestaCorrecta
-      ) {
+      if (respuestaIngresada.trim().toUpperCase() === eco.respuestaCorrecta) {
         setMensajeError("")
         setFragmentos([...fragmentos, eco.fragmento])
         setRespuestaIngresada("")
@@ -249,8 +248,12 @@ export default function App() {
 
     return (
       <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p>
+          <strong>{equipoNombre}</strong>
+        </p>
+        <p>
+          Eco {ecoActual + 1} de {ecos.length}
+        </p>
 
         <h2>{eco.titulo}</h2>
         <p>{eco.pregunta}</p>
@@ -273,7 +276,7 @@ export default function App() {
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
-    function siguiente() {
+    function siguienteEco() {
       setMensajeError("")
 
       if (ecoActual + 1 < ecos.length) {
@@ -286,8 +289,12 @@ export default function App() {
 
     return (
       <div>
-        <p><strong>{equipoNombre}</strong></p>
-        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p>
+          <strong>{equipoNombre}</strong>
+        </p>
+        <p>
+          Eco {ecoActual + 1} de {ecos.length}
+        </p>
 
         <h2>Eco completado</h2>
         <p>Fragmento obtenido: {eco.fragmento}</p>
@@ -299,7 +306,7 @@ export default function App() {
           ))}
         </ul>
 
-        <button onClick={siguiente}>Continuar</button>
+        <button onClick={siguienteEco}>Continuar</button>
       </div>
     )
   }
@@ -311,7 +318,9 @@ export default function App() {
     return (
       <div>
         <h2>Final</h2>
-        <p><strong>{equipoNombre}</strong></p>
+        <p>
+          <strong>{equipoNombre}</strong>
+        </p>
 
         <h3>Fragmentos obtenidos:</h3>
         <ul>
