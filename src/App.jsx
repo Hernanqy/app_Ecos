@@ -46,10 +46,15 @@ export default function App() {
     setFragmentos([])
   }
 
-  function validarCodigo(valor, eco) {
-    const codigoEsperado = eco.codigoCorrectoPorEquipo[equipo]
+  function obtenerValidadorActual() {
+    const eco = ecos[ecoActual]
+    return eco.validadores[equipo]
+  }
 
-    if (valor.trim().toUpperCase() === codigoEsperado) {
+  function validarCodigo(valor) {
+    const validador = obtenerValidadorActual()
+
+    if (valor.trim().toUpperCase() === validador.codigo) {
       setMensajeError("")
       setCodigoIngresado("")
       setPantalla("codigo-correcto")
@@ -79,7 +84,6 @@ export default function App() {
         const { Html5Qrcode } = await import("html5-qrcode")
         if (desmontado) return
 
-        const eco = ecos[ecoActual]
         const scanner = new Html5Qrcode(readerId)
 
         scannerRef.current = scanner
@@ -98,7 +102,7 @@ export default function App() {
             qrLeidoRef.current = true
 
             await detenerScanner()
-            validarCodigo(decodedText, eco)
+            validarCodigo(decodedText)
           },
           () => {}
         )
@@ -169,19 +173,19 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
+    const validador = obtenerValidadorActual()
     const readerId = `reader-${ecoActual}`
 
     return (
       <div>
-        <p>
-          <strong>{equipoNombre}</strong>
-        </p>
-        <p>
-          Eco {ecoActual + 1} de {ecos.length}
-        </p>
+        <p><strong>{equipoNombre}</strong></p>
+        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p><strong>Lugar:</strong> {eco.lugar}</p>
 
         <h2>{eco.titulo}</h2>
         <p>{eco.consigna}</p>
+
+        <p><strong>Busquen:</strong> {validador.objeto}</p>
 
         <h3>Escanear QR</h3>
         <div
@@ -203,7 +207,7 @@ export default function App() {
           placeholder="Código"
         />
 
-        <button onClick={() => validarCodigo(codigoIngresado, eco)}>
+        <button onClick={() => validarCodigo(codigoIngresado)}>
           Validar código
         </button>
 
@@ -218,12 +222,8 @@ export default function App() {
 
     return (
       <div>
-        <p>
-          <strong>{equipoNombre}</strong>
-        </p>
-        <p>
-          Eco {ecoActual + 1} de {ecos.length}
-        </p>
+        <p><strong>{equipoNombre}</strong></p>
+        <p>Eco {ecoActual + 1} de {ecos.length}</p>
 
         <h2>¡Eco encontrado!</h2>
         <p>Validación correcta.</p>
@@ -238,9 +238,13 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre =
       equipos.find((e) => e.id === equipo)?.nombre || ""
+    const validador = obtenerValidadorActual()
 
     function validarRespuesta() {
-      if (respuestaIngresada.trim().toUpperCase() === eco.respuestaCorrecta) {
+      if (
+        respuestaIngresada.trim().toUpperCase() ===
+        validador.respuestaCorrecta
+      ) {
         const nuevosFragmentos = [...fragmentos, eco.fragmento]
         setFragmentos(nuevosFragmentos)
         setRespuestaIngresada("")
@@ -253,15 +257,12 @@ export default function App() {
 
     return (
       <div>
-        <p>
-          <strong>{equipoNombre}</strong>
-        </p>
-        <p>
-          Eco {ecoActual + 1} de {ecos.length}
-        </p>
+        <p><strong>{equipoNombre}</strong></p>
+        <p>Eco {ecoActual + 1} de {ecos.length}</p>
+        <p><strong>Lugar:</strong> {eco.lugar}</p>
 
         <h2>{eco.titulo}</h2>
-        <p>{eco.pregunta}</p>
+        <p>{validador.pregunta}</p>
 
         <input
           value={respuestaIngresada}
@@ -296,12 +297,8 @@ export default function App() {
 
     return (
       <div>
-        <p>
-          <strong>{equipoNombre}</strong>
-        </p>
-        <p>
-          Eco {ecoActual + 1} de {ecos.length}
-        </p>
+        <p><strong>{equipoNombre}</strong></p>
+        <p>Eco {ecoActual + 1} de {ecos.length}</p>
 
         <h2>Eco completado</h2>
         <p>Fragmento obtenido: {eco.fragmento}</p>
@@ -325,9 +322,7 @@ export default function App() {
     return (
       <div>
         <h2>Final</h2>
-        <p>
-          <strong>{equipoNombre}</strong>
-        </p>
+        <p><strong>{equipoNombre}</strong></p>
 
         <h3>Fragmentos obtenidos:</h3>
         <ul>
