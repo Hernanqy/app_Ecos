@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
-import GameProgressBar from "./components/GameProgressBar"
 
 export default function App() {
   const [pantalla, setPantalla] = useState("inicio")
@@ -15,8 +14,6 @@ export default function App() {
   const scannerRef = useRef(null)
   const scannerIniciadoRef = useRef(false)
   const qrLeidoRef = useRef(false)
-
-  const ecosTotales = ecos.length
 
   async function detenerScanner() {
     if (!scannerRef.current) {
@@ -126,102 +123,174 @@ export default function App() {
     }
   }, [pantalla, ecoActual, equipo])
 
-  function Barra() {
-    return (
-      <GameProgressBar
-        current={ecoActual}
-        total={ecosTotales}
-        label="Resonancia de La Máxima"
-      />
-    )
-  }
-
   function renderInicio() {
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
-        <button onClick={() => setPantalla("reglas")}>
-          Comenzar recorrido
-        </button>
+
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">🌿</div>
+          <div className="icono-hero">🧭</div>
+          <p className="texto-destacado">
+            Una experiencia para activar los ecos del territorio.
+          </p>
+          <button className="boton-principal" onClick={() => setPantalla("reglas")}>
+            Comenzar recorrido
+          </button>
+        </div>
       </div>
     )
   }
 
   function renderReglas() {
     return (
-      <div className="pantalla pantalla-centrada">
-        <h1>Ecos de La Máxima</h1>
-        <button onClick={() => setPantalla("equipos")}>
-          Entendido
-        </button>
+      <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">🍃</div>
+          <div className="icono-hero">🧭</div>
+          <h2>Antes de empezar</h2>
+          <p>Esto no es una carrera.</p>
+          <p>No hace falta correr.</p>
+          <p>No toquen nada que no sea necesario.</p>
+          <p>Todo lo que buscan está a la vista.</p>
+          <button onClick={() => setPantalla("equipos")}>Entendido</button>
+        </div>
       </div>
     )
   }
 
   function renderEquipos() {
     return (
-      <div className="pantalla pantalla-centrada">
-        <h2>Elegí tu equipo</h2>
+      <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
 
-        {equipos.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => {
-              setEquipo(item.id)
-              setPantalla("eco")
-            }}
-          >
-            {item.nombre}
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">👣</div>
+          <div className="icono-hero">👥</div>
+          <h2>Elegí tu equipo</h2>
+
+          {equipos.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setEquipo(item.id)
+                setMensajeError("")
+                setPantalla("eco")
+              }}
+            >
+              {item.nombre}
+            </button>
+          ))}
+
+          <button className="boton-secundario" onClick={reiniciarApp}>
+            Volver
           </button>
-        ))}
+        </div>
       </div>
     )
   }
 
   function renderEco() {
     const eco = ecos[ecoActual]
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
     const readerId = `reader-${ecoActual}`
 
     return (
       <div className="pantalla">
-        <Barra />
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>{eco.titulo}</h2>
-        <p>{eco.consigna}</p>
+        <div className="panel">
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
+          <p className="meta">
+            <strong>Lugar:</strong> {eco.lugar}
+          </p>
 
-        <div id={readerId} style={{ height: 250, background: "#ccc" }} />
+          <div className="icono-hero">{eco.icono}</div>
+          <h2>{eco.titulo}</h2>
+          <p>{eco.consigna}</p>
 
-        <input
-          value={codigoIngresado}
-          onChange={(e) => setCodigoIngresado(e.target.value)}
-        />
+          <p className="texto-destacado">
+            <strong>Busquen:</strong> {validador.objeto}
+          </p>
 
-        <button onClick={() => validarCodigo(codigoIngresado)}>
-          Validar
-        </button>
+          <h3>Escanear QR</h3>
+          <div
+            id={readerId}
+            style={{
+              width: "100%",
+              minHeight: "260px",
+              borderRadius: "16px",
+              overflow: "hidden",
+              background: "#d8dccf"
+            }}
+          />
 
-        {mensajeError && <p>{mensajeError}</p>}
+          <p className="texto-suave">o ingresar código manualmente</p>
+
+          <input
+            value={codigoIngresado}
+            onChange={(e) => setCodigoIngresado(e.target.value)}
+            placeholder="Código"
+          />
+
+          <button onClick={() => validarCodigo(codigoIngresado)}>
+            Validar eco
+          </button>
+
+          {mensajeError && <p className="error-texto">{mensajeError}</p>}
+        </div>
       </div>
     )
   }
 
   function renderCodigoCorrecto() {
+    const eco = ecos[ecoActual]
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
+
     return (
       <div className="pantalla pantalla-centrada">
-        <Barra />
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>¡Eco encontrado!</h2>
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">✨</div>
+          <div className="icono-hero">{eco.icono}</div>
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
 
-        <button onClick={() => setPantalla("pregunta")}>
-          Continuar
-        </button>
+          <h2>¡Eco encontrado!</h2>
+          <p>Validación correcta.</p>
+          <p>Desbloquearon la siguiente pista.</p>
+
+          <button onClick={() => setPantalla("pregunta")}>Continuar</button>
+        </div>
       </div>
     )
   }
 
   function renderPregunta() {
     const eco = ecos[ecoActual]
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
     function validarRespuesta() {
@@ -229,7 +298,10 @@ export default function App() {
         respuestaIngresada.trim().toUpperCase() ===
         validador.respuestaCorrecta
       ) {
-        setFragmentos([...fragmentos, eco.fragmento])
+        const nuevosFragmentos = [...fragmentos, eco.fragmento]
+        setFragmentos(nuevosFragmentos)
+        setRespuestaIngresada("")
+        setMensajeError("")
         setPantalla("resultado")
       } else {
         setMensajeError("Respuesta incorrecta")
@@ -238,26 +310,48 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <Barra />
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>{eco.titulo}</h2>
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">🔎</div>
+          <div className="icono-hero">{eco.icono}</div>
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
+          <p className="meta">
+            <strong>Lugar:</strong> {eco.lugar}
+          </p>
 
-        <input
-          value={respuestaIngresada}
-          onChange={(e) => setRespuestaIngresada(e.target.value)}
-        />
+          <h2>{eco.titulo}</h2>
+          <p>{validador.pregunta}</p>
 
-        <button onClick={validarRespuesta}>
-          Responder
-        </button>
+          <input
+            value={respuestaIngresada}
+            onChange={(e) => setRespuestaIngresada(e.target.value)}
+            placeholder="Respuesta"
+          />
 
-        {mensajeError && <p>{mensajeError}</p>}
+          <button onClick={validarRespuesta}>Responder</button>
+
+          {mensajeError && <p className="error-texto">{mensajeError}</p>}
+        </div>
       </div>
     )
   }
 
   function renderResultado() {
+    const eco = ecos[ecoActual]
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
+
     function siguienteEco() {
+      setMensajeError("")
+      setCodigoIngresado("")
+      setRespuestaIngresada("")
+
       if (ecoActual + 1 < ecos.length) {
         setEcoActual((prev) => prev + 1)
         setPantalla("eco")
@@ -268,25 +362,63 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <Barra />
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <h2>Eco completado</h2>
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">🍃</div>
+          <div className="icono-hero">{eco.icono}</div>
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+          <p className="meta">
+            Eco {ecoActual + 1} de {ecos.length}
+          </p>
 
-        <button onClick={siguienteEco}>
-          Continuar
-        </button>
+          <h2>Eco completado</h2>
+          <p className="texto-destacado">
+            Fragmento obtenido: <strong>{eco.fragmento}</strong>
+          </p>
+
+          <h3>Fragmentos reunidos</h3>
+          <ul>
+            {fragmentos.map((f, i) => (
+              <li key={i}>{f}</li>
+            ))}
+          </ul>
+
+          <button onClick={siguienteEco}>Continuar</button>
+        </div>
       </div>
     )
   }
 
   function renderFinal() {
-    return (
-      <div className="pantalla pantalla-centrada">
-        <h2>Recorrido completado</h2>
+    const equipoNombre =
+      equipos.find((e) => e.id === equipo)?.nombre || ""
 
-        <button onClick={reiniciarApp}>
-          Volver al inicio
-        </button>
+    return (
+      <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
+
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+
+        <div className="panel panel-destacado panel-vivo">
+          <div className="mascota-badge">🏞️</div>
+          <div className="icono-hero">🌟</div>
+          <h2>Recorrido completado</h2>
+          <p className="meta">
+            <strong>{equipoNombre}</strong>
+          </p>
+
+          <h3>Fragmentos obtenidos</h3>
+          <ul>
+            {fragmentos.map((f, i) => (
+              <li key={i}>{f}</li>
+            ))}
+          </ul>
+
+          <button onClick={reiniciarApp}>Volver al inicio</button>
+        </div>
       </div>
     )
   }
@@ -300,5 +432,5 @@ export default function App() {
   if (pantalla === "resultado") return renderResultado()
   if (pantalla === "final") return renderFinal()
 
-  return <div>Error</div>
+  return <div>Error de navegación</div>
 }
