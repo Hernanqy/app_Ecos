@@ -5,178 +5,109 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #dfe9d8 0%, #bfd3b2 100%);
-  color: #1f2a1f;
 }
 
 #root {
   min-height: 100vh;
 }
 
-div {
-  max-width: 520px;
-  margin: 0 auto;
+/* 🌿 FONDO CON IMAGEN */
+#root > div {
+  min-height: 100vh;
   padding: 20px;
+  max-width: 520px;
+  margin: auto;
+
+  background:
+    linear-gradient(rgba(0, 40, 0, 0.55), rgba(0, 40, 0, 0.65)),
+    url("/fondo.jpg");
+
+  background-size: cover;
+  background-position: center;
 }
 
+/* 🧾 TARJETAS */
+#root > div > * {
+  background: rgba(255, 250, 235, 0.95);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+/* 🟢 TÍTULO */
 h1 {
-  font-size: 36px;
-  line-height: 1.1;
-  margin: 0 0 12px;
+  font-size: 32px;
   text-align: center;
-  color: #f1e9d2;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+  color: white;
+  background: transparent !important;
+  padding: 0;
+  margin-bottom: 20px;
 }
 
+/* 🟢 SUBTÍTULOS */
 h2 {
-  font-size: 28px;
-  line-height: 1.2;
-  margin: 0 0 12px;
+  font-size: 24px;
   text-align: center;
   color: #234126;
 }
 
 h3 {
-  font-size: 18px;
-  margin: 18px 0 10px;
   text-align: center;
   color: #2e5130;
 }
 
+/* 🟢 TEXTO */
 p {
   font-size: 18px;
-  line-height: 1.45;
-  margin: 10px 0;
   text-align: center;
-}
-
-strong {
-  color: #17351a;
-}
-
-button {
-  width: 100%;
-  padding: 16px 18px;
-  margin-top: 12px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #4e8a42 0%, #2e7d32 100%);
-  color: white;
-  box-shadow: 0 6px 0 #1f5a24;
-  cursor: pointer;
-}
-
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 3px 0 #1f5a24;
-}
-
-input {
-  width: 100%;
-  padding: 15px 16px;
-  margin-top: 12px;
-  font-size: 18px;
-  border-radius: 16px;
-  border: 2px solid #8ca57e;
-  background: #fffdf7;
   color: #1f2a1f;
 }
 
+/* 🟢 INPUT */
+input {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: 2px solid #8ca57e;
+}
+
+/* 🟢 BOTÓN */
+button {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border: none;
+  border-radius: 16px;
+
+  background: linear-gradient(180deg, #4e8a42, #2e7d32);
+  color: white;
+
+  box-shadow: 0 4px 0 #1f5a24;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #1f5a24;
+}
+
+/* 🟢 LISTA */
 ul {
   list-style: none;
   padding: 0;
-  margin: 14px 0 0;
 }
 
 li {
-  background: #fffaf0;
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 16px;
-  font-size: 18px;
+  background: white;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 10px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-#root > div {
-  min-height: 100vh;
-  padding: 24px 20px 40px;
-  background:
-    linear-gradient(rgba(20, 40, 20, 0.18), rgba(20, 40, 20, 0.08)),
-    linear-gradient(180deg, #6f8f6a 0%, #9fbe8c 100%);
-}
-
-#root > div::before {
-  content: "";
-  display: block;
-  height: 120px;
-  border-radius: 28px;
-  margin-bottom: 18px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
-    linear-gradient(180deg, #1f5a24 0%, #2f6d33 100%);
-  box-shadow: inset 0 -8px 0 rgba(0, 0, 0, 0.12);
-}
-
-#root > div > *:not(:first-child) {
-  background: rgba(255, 248, 235, 0.92);
-  border-radius: 20px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-#root > div > p,
-#root > div > h2,
-#root > div > h3,
-#root > div > ul,
-#root > div > input,
-#root > div > button,
-#root > div > div {
-  margin-bottom: 10px;
-}
-
-#root > div > h1 {
-  margin-top: -108px;
-  margin-bottom: 26px;
-  background: transparent;
-  padding: 0;
-}
-
-#root > div > h2 {
-  padding-top: 18px;
-  padding-bottom: 8px;
-}
-
-#root > div > p:last-of-type {
-  padding-bottom: 14px;
-}
-
-#root > div > div[id^="reader-"] {
-  padding: 0;
-  background: #d6dfcf;
-  border: 3px solid #7a936f;
-  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.18);
-}
-
+/* 📱 MOBILE */
 @media (max-width: 480px) {
-  div {
-    padding: 16px;
-  }
-
-  h1 {
-    font-size: 30px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  p,
-  input,
-  button,
-  li {
-    font-size: 17px;
-  }
+  h1 { font-size: 26px; }
+  h2 { font-size: 22px; }
+  p, input, button { font-size: 16px; }
 }
