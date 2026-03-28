@@ -16,15 +16,21 @@ body {
 }
 
 .pantalla {
-  position: relative;
   min-height: 100vh;
   max-width: 520px;
   margin: 0 auto;
   padding: 20px;
-  overflow: hidden;
   background:
-    linear-gradient(rgba(0, 35, 0, 0.62), rgba(0, 35, 0, 0.72)),
+    linear-gradient(rgba(12, 28, 12, 0.6), rgba(12, 28, 12, 0.72)),
     url("/fondo.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.pantalla-portada {
+  background:
+    linear-gradient(rgba(18, 34, 16, 0.18), rgba(18, 34, 16, 0.42)),
+    url("/portada-bosque.png");
   background-size: cover;
   background-position: center;
 }
@@ -33,29 +39,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.personaje-guia {
-  position: absolute;
-
-  right: -140px;   /* más afuera */
-  bottom: -40px;   /* más abajo */
-
-  height: 65vh;
-  max-height: 520px;
-
-  opacity: 0.35;
-
-  pointer-events: none;
-
-  z-index: 0; /* importante: atrás */
-
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
-}
-.titulo-principal,
-.panel {
-  position: relative;
-  z-index: 2;
 }
 
 .titulo-principal {
@@ -70,7 +53,7 @@ body {
 
 .panel {
   position: relative;
-  background: linear-gradient(180deg, #e8dfbf 0%, #d4c69b 100%);
+  background: linear-gradient(180deg, rgba(232, 223, 191, 0.95) 0%, rgba(212, 198, 155, 0.95) 100%);
   border-radius: 28px;
   padding: 18px;
   border: 4px solid #8a7b55;
@@ -82,6 +65,11 @@ body {
 .panel-destacado {
   max-width: 440px;
   margin: 0 auto;
+}
+
+.pantalla-portada .panel {
+  background: linear-gradient(180deg, rgba(240, 231, 205, 0.9) 0%, rgba(219, 207, 170, 0.9) 100%);
+  backdrop-filter: blur(2px);
 }
 
 .mascota-badge {
@@ -242,13 +230,6 @@ div[id^="reader-"] {
 
   .titulo-principal {
     font-size: 36px;
-  }
-
-  .personaje-guia {
-    right: -90px;
-    bottom: -10px;
-    height: 46vh;
-    opacity: 0.22;
   }
 
   h2 {

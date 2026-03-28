@@ -1,18 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
 
-function DecoracionPersonaje({ visible = true }) {
-  if (!visible) return null
-
-  return (
-    <img
-      src="/personaje.png"
-      alt="Guía de la experiencia"
-      className="personaje-guia"
-    />
-  )
-}
-
 export default function App() {
   const [pantalla, setPantalla] = useState("inicio")
   const [equipo, setEquipo] = useState(null)
@@ -137,8 +125,7 @@ export default function App() {
 
   function renderInicio() {
     return (
-      <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
+      <div className="pantalla pantalla-centrada pantalla-portada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
@@ -157,8 +144,7 @@ export default function App() {
 
   function renderReglas() {
     return (
-      <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
+      <div className="pantalla pantalla-centrada pantalla-portada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
@@ -177,8 +163,7 @@ export default function App() {
 
   function renderEquipos() {
     return (
-      <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
+      <div className="pantalla pantalla-centrada pantalla-portada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
@@ -274,7 +259,6 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
@@ -372,7 +356,6 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
@@ -408,8 +391,7 @@ export default function App() {
       equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
-      <div className="pantalla pantalla-centrada">
-        <DecoracionPersonaje />
+      <div className="pantalla pantalla-centrada pantalla-portada">
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado">
