@@ -10,6 +10,8 @@ export const ecos = [
     icono: "⏳",
     lugar: "Museo - Sala primeros habitantes",
     titulo: "Eco del tiempo",
+    fragmento: "ORIGEN",
+    fragmentoIcono: "🪨",
     consigna:
       "Encuentren algo que fue creado por personas que vivieron en este territorio mucho antes que ustedes.",
     validadores: {
@@ -31,14 +33,15 @@ export const ecos = [
         pregunta: "¿Para qué fue creada esta herramienta?",
         respuestaCorrecta: "CAZAR"
       }
-    },
-    fragmento: "ORIGEN"
+    }
   },
   {
     id: 2,
     icono: "👁️",
     lugar: "Salida del museo / exterior",
     titulo: "Eco de la observación",
+    fragmento: "MIRAR",
+    fragmentoIcono: "👁️",
     consigna:
       "Deténganse. Durante unos segundos no hablen. Miren el entorno con atención.",
     validadores: {
@@ -60,14 +63,15 @@ export const ecos = [
         pregunta: "¿Qué no se ve pero se siente en el entorno?",
         respuestaCorrecta: "VIENTO"
       }
-    },
-    fragmento: "MIRAR"
+    }
   },
   {
     id: 3,
     icono: "🐾",
     lugar: "Bioparque",
     titulo: "Eco de la vida",
+    fragmento: "VIVO",
+    fragmentoIcono: "🌿",
     consigna:
       "Encuentren algo vivo que no se mueva como ustedes, pero que forma parte de este lugar.",
     validadores: {
@@ -89,7 +93,6 @@ export const ecos = [
         pregunta: "¿Qué parte del árbol crece hacia el suelo?",
         respuestaCorrecta: "RAIZ"
       }
-    },
-    fragmento: "VIVO"
+    }
   }
 ]

@@ -183,6 +183,41 @@ body {
   margin: 14px 0;
 }
 
+.fragmentos-grid {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.fragmento-icono {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  border: 3px solid #8a7b55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow:
+    0 4px 0 #665738,
+    inset 0 2px 4px rgba(255, 255, 255, 0.35);
+  transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+}
+
+.fragmento-icono.obtenido {
+  background: linear-gradient(180deg, #f9edc9 0%, #d9c583 100%);
+  opacity: 1;
+  filter: none;
+}
+
+.fragmento-icono.faltante {
+  background: linear-gradient(180deg, #d4d1c7 0%, #b4afa4 100%);
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
 h2 {
   font-family: "Baloo 2", cursive;
   font-size: 30px;
@@ -379,5 +414,11 @@ div[id^="reader-"] {
     width: 30px;
     height: 30px;
     font-size: 14px;
+  }
+
+  .fragmento-icono {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
   }
 }

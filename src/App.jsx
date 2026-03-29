@@ -19,6 +19,26 @@ function BarraProgreso({ ecoActual, total }) {
   )
 }
 
+function ColeccionFragmentos({ fragmentos }) {
+  return (
+    <div className="fragmentos-grid">
+      {ecos.map((eco) => {
+        const obtenido = fragmentos.find((f) => f.nombre === eco.fragmento)
+
+        return (
+          <div
+            key={eco.id}
+            className={`fragmento-icono ${obtenido ? "obtenido" : "faltante"}`}
+            title={obtenido ? eco.fragmento : "Fragmento por descubrir"}
+          >
+            <span>{eco.fragmentoIcono}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function App() {
   const [pantalla, setPantalla] = useState("inicio")
   const [equipo, setEquipo] = useState(null)
@@ -310,7 +330,13 @@ export default function App() {
         respuestaIngresada.trim().toUpperCase() ===
         validador.respuestaCorrecta
       ) {
-        const nuevosFragmentos = [...fragmentos, eco.fragmento]
+        const nuevosFragmentos = [
+          ...fragmentos,
+          {
+            nombre: eco.fragmento,
+            icono: eco.fragmentoIcono
+          }
+        ]
         setFragmentos(nuevosFragmentos)
         setRespuestaIngresada("")
         setMensajeError("")
@@ -383,11 +409,7 @@ export default function App() {
           </p>
 
           <h3>Fragmentos reunidos</h3>
-          <ul>
-            {fragmentos.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
+          <ColeccionFragmentos fragmentos={fragmentos} />
 
           <button onClick={siguienteEco}>Continuar</button>
         </div>
@@ -412,12 +434,8 @@ export default function App() {
           <h2>Recorrido completado</h2>
           <p className="meta"><strong>{equipoNombre}</strong></p>
 
-          <h3>Fragmentos obtenidos</h3>
-          <ul>
-            {fragmentos.map((f, i) => (
-              <li key={i}>{f}</li>
-            ))}
-          </ul>
+          <h3>Fragmentos reunidos</h3>
+          <ColeccionFragmentos fragmentos={fragmentos} />
 
           <button onClick={reiniciarApp}>Volver al inicio</button>
         </div>
