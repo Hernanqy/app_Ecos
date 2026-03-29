@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
 
+function reproducirSonido(ruta) {
+  const audio = new Audio(ruta)
+  audio.play().catch(() => {})
+}
+
 function BarraProgreso({ ecoActual, total }) {
   return (
     <div className="barra-progreso">
@@ -93,6 +98,7 @@ export default function App() {
     const validador = obtenerValidadorActual()
 
     if (valor.trim().toUpperCase() === validador.codigo) {
+      reproducirSonido("/sonidos/qr.mp3")
       setMensajeError("")
       setCodigoIngresado("")
       setPantalla("codigo-correcto")
@@ -160,6 +166,12 @@ export default function App() {
       }
     }
   }, [pantalla, ecoActual, equipo])
+
+  useEffect(() => {
+    if (pantalla === "resultado") {
+      reproducirSonido("/sonidos/logro.mp3")
+    }
+  }, [pantalla])
 
   function renderInicio() {
     return (
@@ -330,6 +342,8 @@ export default function App() {
         respuestaIngresada.trim().toUpperCase() ===
         validador.respuestaCorrecta
       ) {
+        reproducirSonido("/sonidos/correcto.mp3")
+
         const nuevosFragmentos = [
           ...fragmentos,
           {
@@ -337,6 +351,7 @@ export default function App() {
             icono: eco.fragmentoIcono
           }
         ]
+
         setFragmentos(nuevosFragmentos)
         setRespuestaIngresada("")
         setMensajeError("")
