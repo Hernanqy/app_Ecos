@@ -80,6 +80,10 @@ body {
   text-shadow: 0 4px 0 rgba(39, 64, 30, 0.55);
 }
 
+.titulo-secundario {
+  font-size: 34px;
+}
+
 .panel {
   background: linear-gradient(180deg, rgba(232, 223, 191, 0.95) 0%, rgba(212, 198, 155, 0.95) 100%);
   border-radius: 28px;
@@ -136,6 +140,47 @@ body {
   box-shadow:
     0 6px 0 #665738,
     inset 0 2px 4px rgba(255, 255, 255, 0.35);
+}
+
+.barra-progreso {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.paso {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #c4b484;
+  border: 3px solid #8a7b55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5a4c2b;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: inset 0 2px 2px rgba(255,255,255,0.35);
+}
+
+.paso.actual {
+  background: linear-gradient(180deg, #f3dd8b 0%, #d5b24b 100%);
+  color: #473510;
+  transform: scale(1.08);
+}
+
+.paso.completado {
+  background: linear-gradient(180deg, #79c861 0%, #3d8f3a 100%);
+  color: white;
+}
+
+.caja-destacada {
+  background: rgba(255, 248, 226, 0.8);
+  border: 2px solid #b49c68;
+  border-radius: 18px;
+  padding: 10px 12px;
+  margin: 14px 0;
 }
 
 h2 {
@@ -307,6 +352,10 @@ div[id^="reader-"] {
     font-size: 36px;
   }
 
+  .titulo-secundario {
+    font-size: 30px;
+  }
+
   h2 {
     font-size: 27px;
   }
@@ -324,5 +373,11 @@ div[id^="reader-"] {
   .luz-magica {
     width: 85%;
     height: 22%;
+  }
+
+  .paso {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
   }
 }

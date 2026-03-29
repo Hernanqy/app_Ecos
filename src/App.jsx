@@ -1,6 +1,24 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
 
+function BarraProgreso({ ecoActual, total }) {
+  return (
+    <div className="barra-progreso">
+      {Array.from({ length: total }).map((_, index) => {
+        let clase = "paso"
+        if (index < ecoActual) clase += " completado"
+        if (index === ecoActual) clase += " actual"
+
+        return (
+          <div key={index} className={clase}>
+            <span>{index + 1}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function App() {
   const [pantalla, setPantalla] = useState("inicio")
   const [equipo, setEquipo] = useState(null)
@@ -136,6 +154,9 @@ export default function App() {
           <p className="texto-destacado">
             Una experiencia para activar los ecos del territorio.
           </p>
+          <p className="texto-suave">
+            Recorré, observá y descubrí los fragmentos del lugar.
+          </p>
           <button className="boton-principal" onClick={() => setPantalla("reglas")}>
             Comenzar recorrido
           </button>
@@ -200,33 +221,29 @@ export default function App() {
 
   function renderEco() {
     const eco = ecos[ecoActual]
-    const equipoNombre =
-      equipos.find((e) => e.id === equipo)?.nombre || ""
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
     const readerId = `reader-${ecoActual}`
 
     return (
       <div className="pantalla">
-        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+        <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
 
         <div className="panel">
-          <p className="meta">
-            <strong>{equipoNombre}</strong>
-          </p>
-          <p className="meta">
-            Eco {ecoActual + 1} de {ecos.length}
-          </p>
-          <p className="meta">
-            <strong>Lugar:</strong> {eco.lugar}
-          </p>
+          <BarraProgreso ecoActual={ecoActual} total={ecos.length} />
+
+          <p className="meta"><strong>{equipoNombre}</strong></p>
+          <p className="meta"><strong>Lugar:</strong> {eco.lugar}</p>
 
           <div className="icono-hero">{eco.icono}</div>
           <h2>{eco.titulo}</h2>
           <p>{eco.consigna}</p>
 
-          <p className="texto-destacado">
-            <strong>Busquen:</strong> {validador.objeto}
-          </p>
+          <div className="caja-destacada">
+            <p className="texto-destacado">
+              <strong>Busquen:</strong> {validador.objeto}
+            </p>
+          </div>
 
           <h3>Escanear QR</h3>
           <div
@@ -260,22 +277,18 @@ export default function App() {
 
   function renderCodigoCorrecto() {
     const eco = ecos[ecoActual]
-    const equipoNombre =
-      equipos.find((e) => e.id === equipo)?.nombre || ""
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
       <div className="pantalla pantalla-centrada">
-        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+        <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado panel-vivo">
+          <BarraProgreso ecoActual={ecoActual} total={ecos.length} />
+
           <div className="mascota-badge">✨</div>
           <div className="icono-hero">{eco.icono}</div>
-          <p className="meta">
-            <strong>{equipoNombre}</strong>
-          </p>
-          <p className="meta">
-            Eco {ecoActual + 1} de {ecos.length}
-          </p>
+          <p className="meta"><strong>{equipoNombre}</strong></p>
 
           <h2>¡Eco encontrado!</h2>
           <p>Validación correcta.</p>
@@ -289,8 +302,7 @@ export default function App() {
 
   function renderPregunta() {
     const eco = ecos[ecoActual]
-    const equipoNombre =
-      equipos.find((e) => e.id === equipo)?.nombre || ""
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
     function validarRespuesta() {
@@ -310,20 +322,15 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+        <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado panel-vivo">
+          <BarraProgreso ecoActual={ecoActual} total={ecos.length} />
+
           <div className="mascota-badge">🔎</div>
           <div className="icono-hero">{eco.icono}</div>
-          <p className="meta">
-            <strong>{equipoNombre}</strong>
-          </p>
-          <p className="meta">
-            Eco {ecoActual + 1} de {ecos.length}
-          </p>
-          <p className="meta">
-            <strong>Lugar:</strong> {eco.lugar}
-          </p>
+          <p className="meta"><strong>{equipoNombre}</strong></p>
+          <p className="meta"><strong>Lugar:</strong> {eco.lugar}</p>
 
           <h2>{eco.titulo}</h2>
           <p>{validador.pregunta}</p>
@@ -344,8 +351,7 @@ export default function App() {
 
   function renderResultado() {
     const eco = ecos[ecoActual]
-    const equipoNombre =
-      equipos.find((e) => e.id === equipo)?.nombre || ""
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
     function siguienteEco() {
       setMensajeError("")
@@ -362,17 +368,14 @@ export default function App() {
 
     return (
       <div className="pantalla pantalla-centrada">
-        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+        <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado panel-vivo">
+          <BarraProgreso ecoActual={ecoActual + 1} total={ecos.length} />
+
           <div className="mascota-badge">🍃</div>
           <div className="icono-hero">{eco.icono}</div>
-          <p className="meta">
-            <strong>{equipoNombre}</strong>
-          </p>
-          <p className="meta">
-            Eco {ecoActual + 1} de {ecos.length}
-          </p>
+          <p className="meta"><strong>{equipoNombre}</strong></p>
 
           <h2>Eco completado</h2>
           <p className="texto-destacado">
@@ -393,8 +396,7 @@ export default function App() {
   }
 
   function renderFinal() {
-    const equipoNombre =
-      equipos.find((e) => e.id === equipo)?.nombre || ""
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
     return (
       <div className="pantalla pantalla-centrada pantalla-portada">
@@ -403,12 +405,12 @@ export default function App() {
         <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
         <div className="panel panel-destacado panel-vivo">
+          <BarraProgreso ecoActual={ecos.length} total={ecos.length} />
+
           <div className="mascota-badge">🏞️</div>
           <div className="icono-hero">🌟</div>
           <h2>Recorrido completado</h2>
-          <p className="meta">
-            <strong>{equipoNombre}</strong>
-          </p>
+          <p className="meta"><strong>{equipoNombre}</strong></p>
 
           <h3>Fragmentos obtenidos</h3>
           <ul>
