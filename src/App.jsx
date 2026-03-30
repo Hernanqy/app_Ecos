@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { ecos, equipos } from "./data"
 
+function normalizar(texto) {
+  return String(texto || "")
+    .trim()
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+}
+
+
 function reproducirSonido(ruta) {
   const audio = new Audio(ruta)
   audio.play().catch(() => {})
@@ -339,8 +348,8 @@ export default function App() {
 
     function validarRespuesta() {
       if (
-        respuestaIngresada.trim().toUpperCase() ===
-        validador.respuestaCorrecta
+       normalizar(respuestaIngresada) ===
+normalizar(validador.respuestaCorrecta)
       ) {
         reproducirSonido("/sonidos/correcto.mp3")
 
