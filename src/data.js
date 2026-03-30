@@ -16,7 +16,7 @@ export const ecos = [
       "Encuentren algo que fue creado por personas que vivieron en este territorio mucho antes que ustedes.",
     validadores: {
       a: {
-        codigo: "biface",
+        codigo: "BIFACE",
         objeto: "Punta de proyectil",
         pregunta: "¿Como se llama la piedra que se uso?",
         respuestaCorrecta: "cuarsita"
