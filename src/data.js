@@ -17,7 +17,7 @@ export const ecos = [
     validadores: {
       a: {
         codigo: "BIFACE",
-        objeto: "Punta de proyectil",
+        objeto: "Herramienta de piedra",
         pregunta: "¿Como se llama la piedra que se uso?",
         respuestaCorrecta: "cuarsita"
       },
@@ -28,10 +28,10 @@ export const ecos = [
         respuestaCorrecta: "PASADO"
       },
       c: {
-        codigo: "HERRAMIENTA",
-        objeto: "Herramienta antigua",
-        pregunta: "¿Para qué fue creada esta herramienta?",
-        respuestaCorrecta: "CAZAR"
+        codigo: "GLIPTODONTE",
+        objeto: "Animal prehistorico con caparazon",
+        pregunta: "¿Que nos da la informacion sobre ellos hoy?",
+        respuestaCorrecta: "fosiles"
       }
     }
   },
