@@ -22,10 +22,10 @@ export const ecos = [
         respuestaCorrecta: "cuarsita"
       },
       b: {
-        codigo: "FOSIL",
+        codigo: "TOXODON",
         objeto: "Fósil",
-        pregunta: "¿Qué nos permite conocer un fósil?",
-        respuestaCorrecta: "PASADO"
+        pregunta: "¿Como se llama este animal?",
+        respuestaCorrecta: "toxodon"
       },
       c: {
         codigo: "GLIPTODONTE",
