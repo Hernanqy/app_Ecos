@@ -175,12 +175,13 @@ export default function App() {
       }
     }
   }, [pantalla, ecoActual, equipo])
-
-  useEffect(() => {
-    if (pantalla === "resultado") {
+useEffect(() => {
+  if (pantalla === "resultado") {
+    setTimeout(() => {
       reproducirSonido("/sonidos/logro.mp3")
-    }
-  }, [pantalla])
+    }, 700)
+  }
+}, [pantalla])
 
   function renderInicio() {
     return (

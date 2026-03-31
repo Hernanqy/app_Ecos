@@ -38,7 +38,7 @@ export const ecos = [
   {
     id: 2,
     icono: "👁️",
-    lugar: "Salida del museo / exterior",
+    lugar: "Lago",
     titulo: "Eco de la observación",
     fragmento: "MIRAR",
     fragmentoIcono: "👁️",
@@ -68,7 +68,7 @@ export const ecos = [
   {
     id: 3,
     icono: "🐾",
-    lugar: "Bioparque",
+    lugar: "Condorera",
     titulo: "Eco de la vida",
     fragmento: "VIVO",
     fragmentoIcono: "🌿",
@@ -94,5 +94,36 @@ export const ecos = [
         respuestaCorrecta: "RAIZ"
       }
     }
+  },
+{
+  id: 4,
+  icono: "🏛️",
+  lugar: "Casona",
+  titulo: "Eco de la memoria",
+  fragmento: "MEMORIA",
+  fragmentoIcono: "📜",
+  consigna:
+    "Este lugar guarda historias. Busquen algo que haya estado aquí antes que ustedes y que aún permanezca.",
+  validadores: {
+    a: {
+      codigo: "PUERTA",
+      objeto: "Puerta antigua",
+      pregunta: "¿Qué elemento permite entrar y salir de un lugar?",
+      respuestaCorrecta: "PUERTA"
+    },
+    b: {
+      codigo: "VENTANA",
+      objeto: "Ventana",
+      pregunta: "¿Qué elemento permite ver hacia afuera?",
+      respuestaCorrecta: "VENTANA"
+    },
+    c: {
+      codigo: "HISTORIA",
+      objeto: "Relato del lugar",
+      pregunta: "¿Qué se construye con el paso del tiempo?",
+      respuestaCorrecta: "HISTORIA"
+    }
   }
+}
+
 ]
