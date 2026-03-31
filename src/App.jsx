@@ -9,7 +9,6 @@ function normalizar(texto) {
     .replace(/[\u0300-\u036f]/g, "")
 }
 
-
 function reproducirSonido(ruta) {
   const audio = new Audio(ruta)
   audio.play().catch(() => {})
@@ -100,13 +99,14 @@ export default function App() {
 
   function obtenerValidadorActual() {
     const eco = ecos[ecoActual]
-    return eco.validadores[equipo]
+    return eco?.validadores?.[equipo]
   }
 
   function validarCodigo(valor) {
     const validador = obtenerValidadorActual()
+    if (!validador) return
 
-    if (valor.trim().toUpperCase() === validador.codigo) {
+    if (normalizar(valor) === normalizar(validador.codigo)) {
       reproducirSonido("/sonidos/qr.mp3")
       setMensajeError("")
       setCodigoIngresado("")
@@ -128,6 +128,9 @@ export default function App() {
       }
 
       if (scannerIniciadoRef.current) return
+
+      const validador = obtenerValidadorActual()
+      if (!validador) return
 
       const readerId = `reader-${ecoActual}`
       const readerElement = document.getElementById(readerId)
@@ -175,13 +178,16 @@ export default function App() {
       }
     }
   }, [pantalla, ecoActual, equipo])
-useEffect(() => {
-  if (pantalla === "resultado") {
-    setTimeout(() => {
-      reproducirSonido("/sonidos/logro.mp3")
-    }, 700)
-  }
-}, [pantalla])
+
+  useEffect(() => {
+    if (pantalla === "resultado") {
+      const timer = setTimeout(() => {
+        reproducirSonido("/sonidos/logro.mp3")
+      }, 700)
+
+      return () => clearTimeout(timer)
+    }
+  }, [pantalla])
 
   function renderInicio() {
     return (
@@ -265,6 +271,11 @@ useEffect(() => {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
+
+    if (!eco || !validador) {
+      return <div className="pantalla">Error en datos del eco</div>
+    }
+
     const readerId = `reader-${ecoActual}`
 
     return (
@@ -347,22 +358,29 @@ useEffect(() => {
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
+    if (!eco || !validador) {
+      return <div className="pantalla">Error en datos de la pregunta</div>
+    }
+
     function validarRespuesta() {
       if (
-       normalizar(respuestaIngresada) ===
-normalizar(validador.respuestaCorrecta)
+        normalizar(respuestaIngresada) ===
+        normalizar(validador.respuestaCorrecta)
       ) {
         reproducirSonido("/sonidos/correcto.mp3")
 
-        const nuevosFragmentos = [
-          ...fragmentos,
-          {
-            nombre: eco.fragmento,
-            icono: eco.fragmentoIcono
-          }
-        ]
+        const yaExiste = fragmentos.find((f) => f.nombre === eco.fragmento)
 
-        setFragmentos(nuevosFragmentos)
+        if (!yaExiste) {
+          setFragmentos([
+            ...fragmentos,
+            {
+              nombre: eco.fragmento,
+              icono: eco.fragmentoIcono
+            }
+          ])
+        }
+
         setRespuestaIngresada("")
         setMensajeError("")
         setPantalla("resultado")
@@ -462,7 +480,45 @@ normalizar(validador.respuestaCorrecta)
           <h3>Fragmentos reunidos</h3>
           <ColeccionFragmentos fragmentos={fragmentos} />
 
-          <button onClick={reiniciarApp}>Volver al inicio</button>
+          <button onClick={() => setPantalla("cierre")}>
+            Obtener fragmento final
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  function renderCierre() {
+    return (
+      <div
+        className="pantalla"
+        style={{
+          padding: 0,
+          maxWidth: "520px"
+        }}
+      >
+        <img
+          src="/pantalla-final.jpg"
+          alt="Pantalla final"
+          style={{
+            width: "100%",
+            height: "100vh",
+            objectFit: "cover",
+            display: "block"
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: "24px",
+            left: 0,
+            width: "100%",
+            padding: "0 20px",
+            zIndex: 3
+          }}
+        >
+          <button onClick={reiniciarApp}>Obtener fragmento final</button>
         </div>
       </div>
     )
@@ -476,6 +532,7 @@ normalizar(validador.respuestaCorrecta)
   if (pantalla === "pregunta") return renderPregunta()
   if (pantalla === "resultado") return renderResultado()
   if (pantalla === "final") return renderFinal()
+  if (pantalla === "cierre") return renderCierre()
 
   return <div>Error de navegación</div>
 }
