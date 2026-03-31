@@ -14,6 +14,24 @@ function reproducirSonido(ruta) {
   audio.play().catch(() => {})
 }
 
+const cierrePorEquipo = {
+  a: {
+    imagen: "/final-a.jpg",
+    numero: "17",
+    texto: "donde el origen sigue hablando en las huellas del territorio,"
+  },
+  b: {
+    imagen: "/final-b.jpg",
+    numero: "42",
+    texto: "donde la vida se entrelaza con las historias que aún resisten,"
+  },
+  c: {
+    imagen: "/final-c.jpg",
+    numero: "89",
+    texto: "y donde la memoria del pueblo espera ser reunida entre todos."
+  }
+}
+
 function BarraProgreso({ ecoActual, total }) {
   return (
     <div className="barra-progreso">
@@ -61,6 +79,7 @@ export default function App() {
   const [mensajeError, setMensajeError] = useState("")
   const [respuestaIngresada, setRespuestaIngresada] = useState("")
   const [fragmentos, setFragmentos] = useState([])
+  const [mostrarPistaFinal, setMostrarPistaFinal] = useState(false)
 
   const scannerRef = useRef(null)
   const scannerIniciadoRef = useRef(false)
@@ -95,16 +114,21 @@ export default function App() {
     setRespuestaIngresada("")
     setMensajeError("")
     setFragmentos([])
+    setMostrarPistaFinal(false)
   }
 
   function obtenerValidadorActual() {
     const eco = ecos[ecoActual]
-    return eco?.validadores?.[equipo]
+    return eco?.validadores?.[equipo] || null
   }
 
   function validarCodigo(valor) {
     const validador = obtenerValidadorActual()
-    if (!validador) return
+
+    if (!validador) {
+      setMensajeError("No hay datos para este equipo en este eco")
+      return
+    }
 
     if (normalizar(valor) === normalizar(validador.codigo)) {
       reproducirSonido("/sonidos/qr.mp3")
@@ -130,7 +154,10 @@ export default function App() {
       if (scannerIniciadoRef.current) return
 
       const validador = obtenerValidadorActual()
-      if (!validador) return
+      if (!validador) {
+        setMensajeError("No hay datos del eco para este equipo")
+        return
+      }
 
       const readerId = `reader-${ecoActual}`
       const readerElement = document.getElementById(readerId)
@@ -272,8 +299,12 @@ export default function App() {
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
-    if (!eco || !validador) {
-      return <div className="pantalla">Error en datos del eco</div>
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco {ecoActual + 1}</div>
+    }
+
+    if (!validador) {
+      return <div className="pantalla">Error: no existe validador para el equipo {equipo}</div>
     }
 
     const readerId = `reader-${ecoActual}`
@@ -358,8 +389,12 @@ export default function App() {
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
-    if (!eco || !validador) {
-      return <div className="pantalla">Error en datos de la pregunta</div>
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco {ecoActual + 1}</div>
+    }
+
+    if (!validador) {
+      return <div className="pantalla">Error: no existe pregunta para el equipo {equipo}</div>
     }
 
     function validarRespuesta() {
@@ -480,7 +515,12 @@ export default function App() {
           <h3>Fragmentos reunidos</h3>
           <ColeccionFragmentos fragmentos={fragmentos} />
 
-          <button onClick={() => setPantalla("cierre")}>
+          <button
+            onClick={() => {
+              setMostrarPistaFinal(false)
+              setPantalla("cierre")
+            }}
+          >
             Obtener fragmento final
           </button>
         </div>
@@ -489,6 +529,12 @@ export default function App() {
   }
 
   function renderCierre() {
+    const cierre = cierrePorEquipo[equipo]
+
+    if (!cierre) {
+      return <div className="pantalla">Error: no existe cierre para este equipo</div>
+    }
+
     return (
       <div
         className="pantalla"
@@ -498,7 +544,7 @@ export default function App() {
         }}
       >
         <img
-          src="/pantalla-final.png"
+          src={cierre.imagen}
           alt="Pantalla final"
           style={{
             width: "100%",
@@ -518,7 +564,22 @@ export default function App() {
             zIndex: 3
           }}
         >
-          <button onClick={reiniciarApp}>Obtener fragmento final</button>
+          {!mostrarPistaFinal ? (
+            <button onClick={() => setMostrarPistaFinal(true)}>
+              Obtener fragmento final
+            </button>
+          ) : (
+            <div
+              className="panel panel-destacado"
+              style={{
+                marginBottom: "10px"
+              }}
+            >
+              <h2>Número {cierre.numero}</h2>
+              <p>{cierre.texto}</p>
+              <button onClick={reiniciarApp}>Volver al inicio</button>
+            </div>
+          )}
         </div>
       </div>
     )
