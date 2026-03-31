@@ -16,19 +16,13 @@ function reproducirSonido(ruta) {
 
 const cierrePorEquipo = {
   a: {
-    imagen: "/final-a.jpg",
-    numero: "17",
-    texto: "donde el origen sigue hablando en las huellas del territorio,"
+    imagen: "/final-a.jpg"
   },
   b: {
-    imagen: "/final-b.jpg",
-    numero: "42",
-    texto: "donde la vida se entrelaza con las historias que aún resisten,"
+    imagen: "/final-b.jpg"
   },
   c: {
-    imagen: "/final-c.jpg",
-    numero: "89",
-    texto: "y donde la memoria del pueblo espera ser reunida entre todos."
+    imagen: "/final-c.jpg"
   }
 }
 
@@ -79,7 +73,7 @@ export default function App() {
   const [mensajeError, setMensajeError] = useState("")
   const [respuestaIngresada, setRespuestaIngresada] = useState("")
   const [fragmentos, setFragmentos] = useState([])
-  const [mostrarPistaFinal, setMostrarPistaFinal] = useState(false)
+  
 
   const scannerRef = useRef(null)
   const scannerIniciadoRef = useRef(false)
@@ -114,7 +108,7 @@ export default function App() {
     setRespuestaIngresada("")
     setMensajeError("")
     setFragmentos([])
-    setMostrarPistaFinal(false)
+    
   }
 
   function obtenerValidadorActual() {
@@ -495,95 +489,75 @@ export default function App() {
     )
   }
 
-  function renderFinal() {
-    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
+ function renderFinal() {
+  const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
-    return (
-      <div className="pantalla pantalla-centrada pantalla-portada">
-        <div className="luz-magica"></div>
+  return (
+    <div className="pantalla pantalla-centrada pantalla-portada">
+      <div className="luz-magica"></div>
 
-        <h1 className="titulo-principal">Ecos de La Máxima</h1>
+      <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-        <div className="panel panel-destacado panel-vivo">
-          <BarraProgreso ecoActual={ecos.length} total={ecos.length} />
+      <div className="panel panel-destacado panel-vivo">
+        <BarraProgreso ecoActual={ecos.length} total={ecos.length} />
 
-          <div className="mascota-badge">🏞️</div>
-          <div className="icono-hero">🌟</div>
-          <h2>Recorrido completado</h2>
-          <p className="meta"><strong>{equipoNombre}</strong></p>
+        <div className="mascota-badge">🏞️</div>
+        <div className="icono-hero">🌟</div>
+        <h2>Recorrido completado</h2>
+        <p className="meta"><strong>{equipoNombre}</strong></p>
 
-          <h3>Fragmentos reunidos</h3>
-          <ColeccionFragmentos fragmentos={fragmentos} />
+        <h3>Fragmentos reunidos</h3>
+        <ColeccionFragmentos fragmentos={fragmentos} />
 
-          <button
-            onClick={() => {
-              setMostrarPistaFinal(false)
-              setPantalla("cierre")
-            }}
-          >
-            Obtener fragmento final
-          </button>
-        </div>
+        <button onClick={() => setPantalla("cierre")}>
+          Obtener fragmento final
+        </button>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   function renderCierre() {
-    const cierre = cierrePorEquipo[equipo]
+  const cierre = cierrePorEquipo[equipo]
 
-    if (!cierre) {
-      return <div className="pantalla">Error: no existe cierre para este equipo</div>
-    }
+  if (!cierre) {
+    return <div className="pantalla">Error: no existe cierre para este equipo</div>
+  }
 
-    return (
-      <div
-        className="pantalla"
+  return (
+    <div
+      className="pantalla"
+      style={{
+        padding: 0,
+        maxWidth: "520px"
+      }}
+    >
+      <img
+        src={cierre.imagen}
+        alt="Pantalla final"
         style={{
-          padding: 0,
-          maxWidth: "520px"
+          width: "100%",
+          height: "100vh",
+          objectFit: "cover",
+          display: "block"
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: "24px",
+          left: 0,
+          width: "100%",
+          padding: "0 20px",
+          zIndex: 3
         }}
       >
-        <img
-          src={cierre.imagen}
-          alt="Pantalla final"
-          style={{
-            width: "100%",
-            height: "100vh",
-            objectFit: "cover",
-            display: "block"
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            bottom: "24px",
-            left: 0,
-            width: "100%",
-            padding: "0 20px",
-            zIndex: 3
-          }}
-        >
-          {!mostrarPistaFinal ? (
-            <button onClick={() => setMostrarPistaFinal(true)}>
-              Obtener fragmento final
-            </button>
-          ) : (
-            <div
-              className="panel panel-destacado"
-              style={{
-                marginBottom: "10px"
-              }}
-            >
-              <h2>Número {cierre.numero}</h2>
-              <p>{cierre.texto}</p>
-              <button onClick={reiniciarApp}>Volver al inicio</button>
-            </div>
-          )}
-        </div>
+        <button onClick={reiniciarApp}>Volver al inicio</button>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   if (pantalla === "inicio") return renderInicio()
   if (pantalla === "reglas") return renderReglas()
