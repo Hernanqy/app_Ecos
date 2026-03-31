@@ -498,7 +498,7 @@ export default function App() {
         }}
       >
         <img
-          src="/pantalla-final.jpg"
+          src="/pantalla-final.png"
           alt="Pantalla final"
           style={{
             width: "100%",
