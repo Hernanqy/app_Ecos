@@ -15,15 +15,9 @@ function reproducirSonido(ruta) {
 }
 
 const cierrePorEquipo = {
-  a: {
-    imagen: "/final-a.jpg"
-  },
-  b: {
-    imagen: "/final-b.jpg"
-  },
-  c: {
-    imagen: "/final-c.jpg"
-  }
+  a: { imagen: "/final-a.jpg" },
+  b: { imagen: "/final-b.jpg" },
+  c: { imagen: "/final-c.jpg" }
 }
 
 function BarraProgreso({ ecoActual, total }) {
@@ -73,11 +67,11 @@ export default function App() {
   const [mensajeError, setMensajeError] = useState("")
   const [respuestaIngresada, setRespuestaIngresada] = useState("")
   const [fragmentos, setFragmentos] = useState([])
-  
 
   const scannerRef = useRef(null)
   const scannerIniciadoRef = useRef(false)
   const qrLeidoRef = useRef(false)
+  const timerLogroRef = useRef(null)
 
   async function detenerScanner() {
     if (!scannerRef.current) {
@@ -101,6 +95,12 @@ export default function App() {
 
   function reiniciarApp() {
     detenerScanner()
+
+    if (timerLogroRef.current) {
+      clearTimeout(timerLogroRef.current)
+      timerLogroRef.current = null
+    }
+
     setPantalla("inicio")
     setEquipo(null)
     setEcoActual(0)
@@ -108,7 +108,6 @@ export default function App() {
     setRespuestaIngresada("")
     setMensajeError("")
     setFragmentos([])
-    
   }
 
   function obtenerValidadorActual() {
@@ -147,9 +146,11 @@ export default function App() {
 
       if (scannerIniciadoRef.current) return
 
+      const eco = ecos[ecoActual]
       const validador = obtenerValidadorActual()
-      if (!validador) {
-        setMensajeError("No hay datos del eco para este equipo")
+
+      if (!eco || !validador) {
+        setMensajeError("Faltan datos del eco actual")
         return
       }
 
@@ -194,19 +195,22 @@ export default function App() {
 
     return () => {
       desmontado = true
-      if (pantalla === "eco") {
-        detenerScanner()
-      }
+      detenerScanner()
     }
   }, [pantalla, ecoActual, equipo])
 
   useEffect(() => {
     if (pantalla === "resultado") {
-      const timer = setTimeout(() => {
+      timerLogroRef.current = setTimeout(() => {
         reproducirSonido("/sonidos/logro.mp3")
       }, 700)
+    }
 
-      return () => clearTimeout(timer)
+    return () => {
+      if (timerLogroRef.current) {
+        clearTimeout(timerLogroRef.current)
+        timerLogroRef.current = null
+      }
     }
   }, [pantalla])
 
@@ -357,6 +361,10 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco actual</div>
+    }
+
     return (
       <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
@@ -401,8 +409,8 @@ export default function App() {
         const yaExiste = fragmentos.find((f) => f.nombre === eco.fragmento)
 
         if (!yaExiste) {
-          setFragmentos([
-            ...fragmentos,
+          setFragmentos((prev) => [
+            ...prev,
             {
               nombre: eco.fragmento,
               icono: eco.fragmentoIcono
@@ -451,6 +459,10 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco actual</div>
+    }
+
     function siguienteEco() {
       setMensajeError("")
       setCodigoIngresado("")
@@ -489,75 +501,75 @@ export default function App() {
     )
   }
 
- function renderFinal() {
-  const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
+  function renderFinal() {
+    const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
-  return (
-    <div className="pantalla pantalla-centrada pantalla-portada">
-      <div className="luz-magica"></div>
+    return (
+      <div className="pantalla pantalla-centrada pantalla-portada">
+        <div className="luz-magica"></div>
 
-      <h1 className="titulo-principal">Ecos de La Máxima</h1>
+        <h1 className="titulo-principal">Ecos de La Máxima</h1>
 
-      <div className="panel panel-destacado panel-vivo">
-        <BarraProgreso ecoActual={ecos.length} total={ecos.length} />
+        <div className="panel panel-destacado panel-vivo">
+          <BarraProgreso ecoActual={ecos.length} total={ecos.length} />
 
-        <div className="mascota-badge">🏞️</div>
-        <div className="icono-hero">🌟</div>
-        <h2>Recorrido completado</h2>
-        <p className="meta"><strong>{equipoNombre}</strong></p>
+          <div className="mascota-badge">🏞️</div>
+          <div className="icono-hero">🌟</div>
+          <h2>Recorrido completado</h2>
+          <p className="meta"><strong>{equipoNombre}</strong></p>
 
-        <h3>Fragmentos reunidos</h3>
-        <ColeccionFragmentos fragmentos={fragmentos} />
+          <h3>Fragmentos reunidos</h3>
+          <ColeccionFragmentos fragmentos={fragmentos} />
 
-        <button onClick={() => setPantalla("cierre")}>
-          Obtener fragmento final
-        </button>
+          <button onClick={() => setPantalla("cierre")}>
+            Obtener código final
+          </button>
+        </div>
       </div>
-    </div>
-  )
-}
-
-  function renderCierre() {
-  const cierre = cierrePorEquipo[equipo]
-
-  if (!cierre) {
-    return <div className="pantalla">Error: no existe cierre para este equipo</div>
+    )
   }
 
-  return (
-    <div
-      className="pantalla"
-      style={{
-        padding: 0,
-        maxWidth: "520px"
-      }}
-    >
-      <img
-        src={cierre.imagen}
-        alt="Pantalla final"
-        style={{
-          width: "100%",
-          height: "100vh",
-          objectFit: "cover",
-          display: "block"
-        }}
-      />
+  function renderCierre() {
+    const cierre = cierrePorEquipo[equipo]
 
+    if (!cierre) {
+      return <div className="pantalla">Error: no existe cierre para este equipo</div>
+    }
+
+    return (
       <div
+        className="pantalla"
         style={{
-          position: "absolute",
-          bottom: "24px",
-          left: 0,
-          width: "100%",
-          padding: "0 20px",
-          zIndex: 3
+          padding: 0,
+          maxWidth: "520px"
         }}
       >
-        <button onClick={reiniciarApp}>Volver al inicio</button>
+        <img
+          src={cierre.imagen}
+          alt="Pantalla final"
+          style={{
+            width: "100%",
+            height: "100vh",
+            objectFit: "cover",
+            display: "block"
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: "24px",
+            left: 0,
+            width: "100%",
+            padding: "0 20px",
+            zIndex: 3
+          }}
+        >
+          <button onClick={reiniciarApp}>Volver al inicio</button>
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
   if (pantalla === "inicio") return renderInicio()
   if (pantalla === "reglas") return renderReglas()
@@ -569,5 +581,5 @@ export default function App() {
   if (pantalla === "final") return renderFinal()
   if (pantalla === "cierre") return renderCierre()
 
-  return <div>Error de navegación</div>
+  return <div className="pantalla">Error de navegación</div>
 }
