@@ -9,10 +9,15 @@ function normalizar(texto) {
     .replace(/[\u0300-\u036f]/g, "")
 }
 
-
 function reproducirSonido(ruta) {
   const audio = new Audio(ruta)
   audio.play().catch(() => {})
+}
+
+const cierrePorEquipo = {
+  a: { imagen: "/final-a.jpg" },
+  b: { imagen: "/final-b.jpg" },
+  c: { imagen: "/final-c.jpg" }
 }
 
 function BarraProgreso({ ecoActual, total }) {
@@ -66,6 +71,7 @@ export default function App() {
   const scannerRef = useRef(null)
   const scannerIniciadoRef = useRef(false)
   const qrLeidoRef = useRef(false)
+  const timerLogroRef = useRef(null)
 
   async function detenerScanner() {
     if (!scannerRef.current) {
@@ -89,6 +95,12 @@ export default function App() {
 
   function reiniciarApp() {
     detenerScanner()
+
+    if (timerLogroRef.current) {
+      clearTimeout(timerLogroRef.current)
+      timerLogroRef.current = null
+    }
+
     setPantalla("inicio")
     setEquipo(null)
     setEcoActual(0)
@@ -100,13 +112,18 @@ export default function App() {
 
   function obtenerValidadorActual() {
     const eco = ecos[ecoActual]
-    return eco.validadores[equipo]
+    return eco?.validadores?.[equipo] || null
   }
 
   function validarCodigo(valor) {
     const validador = obtenerValidadorActual()
 
-    if (valor.trim().toUpperCase() === validador.codigo) {
+    if (!validador) {
+      setMensajeError("No hay datos para este equipo en este eco")
+      return
+    }
+
+    if (normalizar(valor) === normalizar(validador.codigo)) {
       reproducirSonido("/sonidos/qr.mp3")
       setMensajeError("")
       setCodigoIngresado("")
@@ -128,6 +145,14 @@ export default function App() {
       }
 
       if (scannerIniciadoRef.current) return
+
+      const eco = ecos[ecoActual]
+      const validador = obtenerValidadorActual()
+
+      if (!eco || !validador) {
+        setMensajeError("Faltan datos del eco actual")
+        return
+      }
 
       const readerId = `reader-${ecoActual}`
       const readerElement = document.getElementById(readerId)
@@ -170,15 +195,22 @@ export default function App() {
 
     return () => {
       desmontado = true
-      if (pantalla === "eco") {
-        detenerScanner()
-      }
+      detenerScanner()
     }
   }, [pantalla, ecoActual, equipo])
 
   useEffect(() => {
     if (pantalla === "resultado") {
-      reproducirSonido("/sonidos/logro.mp3")
+      timerLogroRef.current = setTimeout(() => {
+        reproducirSonido("/sonidos/logro.mp3")
+      }, 700)
+    }
+
+    return () => {
+      if (timerLogroRef.current) {
+        clearTimeout(timerLogroRef.current)
+        timerLogroRef.current = null
+      }
     }
   }, [pantalla])
 
@@ -264,6 +296,15 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
+
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco {ecoActual + 1}</div>
+    }
+
+    if (!validador) {
+      return <div className="pantalla">Error: no existe validador para el equipo {equipo}</div>
+    }
+
     const readerId = `reader-${ecoActual}`
 
     return (
@@ -320,6 +361,10 @@ export default function App() {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
 
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco actual</div>
+    }
+
     return (
       <div className="pantalla pantalla-centrada">
         <h1 className="titulo-principal titulo-secundario">Ecos de La Máxima</h1>
@@ -346,22 +391,33 @@ export default function App() {
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
     const validador = obtenerValidadorActual()
 
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco {ecoActual + 1}</div>
+    }
+
+    if (!validador) {
+      return <div className="pantalla">Error: no existe pregunta para el equipo {equipo}</div>
+    }
+
     function validarRespuesta() {
       if (
-       normalizar(respuestaIngresada) ===
-normalizar(validador.respuestaCorrecta)
+        normalizar(respuestaIngresada) ===
+        normalizar(validador.respuestaCorrecta)
       ) {
         reproducirSonido("/sonidos/correcto.mp3")
 
-        const nuevosFragmentos = [
-          ...fragmentos,
-          {
-            nombre: eco.fragmento,
-            icono: eco.fragmentoIcono
-          }
-        ]
+        const yaExiste = fragmentos.find((f) => f.nombre === eco.fragmento)
 
-        setFragmentos(nuevosFragmentos)
+        if (!yaExiste) {
+          setFragmentos((prev) => [
+            ...prev,
+            {
+              nombre: eco.fragmento,
+              icono: eco.fragmentoIcono
+            }
+          ])
+        }
+
         setRespuestaIngresada("")
         setMensajeError("")
         setPantalla("resultado")
@@ -402,6 +458,10 @@ normalizar(validador.respuestaCorrecta)
   function renderResultado() {
     const eco = ecos[ecoActual]
     const equipoNombre = equipos.find((e) => e.id === equipo)?.nombre || ""
+
+    if (!eco) {
+      return <div className="pantalla">Error: no existe el eco actual</div>
+    }
 
     function siguienteEco() {
       setMensajeError("")
@@ -461,6 +521,50 @@ normalizar(validador.respuestaCorrecta)
           <h3>Fragmentos reunidos</h3>
           <ColeccionFragmentos fragmentos={fragmentos} />
 
+          <button onClick={() => setPantalla("cierre")}>
+            Obtener código final
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  function renderCierre() {
+    const cierre = cierrePorEquipo[equipo]
+
+    if (!cierre) {
+      return <div className="pantalla">Error: no existe cierre para este equipo</div>
+    }
+
+    return (
+      <div
+        className="pantalla"
+        style={{
+          padding: 0,
+          maxWidth: "520px"
+        }}
+      >
+        <img
+          src={cierre.imagen}
+          alt="Pantalla final"
+          style={{
+            width: "100%",
+            height: "100vh",
+            objectFit: "cover",
+            display: "block"
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: "24px",
+            left: 0,
+            width: "100%",
+            padding: "0 20px",
+            zIndex: 3
+          }}
+        >
           <button onClick={reiniciarApp}>Volver al inicio</button>
         </div>
       </div>
@@ -475,6 +579,7 @@ normalizar(validador.respuestaCorrecta)
   if (pantalla === "pregunta") return renderPregunta()
   if (pantalla === "resultado") return renderResultado()
   if (pantalla === "final") return renderFinal()
+  if (pantalla === "cierre") return renderCierre()
 
-  return <div>Error de navegación</div>
+  return <div className="pantalla">Error de navegación</div>
 }
